@@ -1,8 +1,9 @@
             
 # Bancarelle
 ## Altre osservazioni
-Quando ho una collezione di oggetti che passo al costruttore è necessario fare un ciclo per controllare che la collezione non contenga elementi nulli (oltre a controllare che la collezione stessa non sia un riferimento nullo).
-Da terminale è necessario compilare una cartella "più in alto" altrimenti il package non viene considerato.
+- Quando ho una collezione di oggetti che passo al costruttore è necessario fare un ciclo per controllare che la collezione non contenga elementi nulli (oltre a controllare che la collezione stessa non sia un riferimento nullo).
+- Da terminale è necessario compilare una cartella "più in alto" altrimenti il package non viene considerato.
+- Nei costruttori (o altri metodi) è necessario controllare oltre che il riferimento non sia null, anche che la stringa non sia vuota con il metodo `.isEmpty()`, infatti il riferimento potrebbe essere `!= null` ma la stringa potrebbe essere vuota.
 
 ## Giocattolo
 
