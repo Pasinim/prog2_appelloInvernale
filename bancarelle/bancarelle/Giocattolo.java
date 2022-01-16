@@ -9,7 +9,7 @@ import java.util.*;
  * RI: nome != NULL,  materiale != null
  */
 public class Giocattolo {
-    private String nome, materiale;
+    public final String nome, materiale;
     /** Inizializza un giocattolo con un dato nome e materiale.
      *  Se nome o materiale sono nulli solleva una eccezione.
      * @param nome nome del giocattolo
