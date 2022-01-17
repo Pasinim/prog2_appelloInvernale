@@ -7,13 +7,22 @@ import java.util.*;
  * La password non deve essere esposta quindi è necessario dichiararla privata.
  * Essendo entrambe final suppongo che l'utente non possa modificare nè nome nè psw
  * AF: nome.toString()
- * IR: nome != null, psw != NULL
+ * IR: 
+ *      nome != null
+ *      psw != NULL
+ *      conversazioni != NULL
  */
+
+
+
 public class Utente {
     public final String nome;
     private final String psw;
-    //public final Set<Utente> interlocutori;
+    /** la variabile di istanza conversazioni permette di associare a this
+     * una serie di conversazioni con vari utenti
+     */
     public final Map<Utente, Conversazione> conversazioni;
+
     /**
      * Inizializza un nuovo utente con una nuova password. Al momento
      * della creazione l'insieme di interlocutori è vuoto.
@@ -52,11 +61,68 @@ public class Utente {
      * @param u utente
      * @return conversazione di this con u
      */
-    public Conversazione getConversazione(Utente u){
+    public Conversazione getConversazioni(Utente u){
         Objects.requireNonNull(u);
         if (!(this.conversazioni.containsKey(u))) throw new IllegalArgumentException();
         return this.conversazioni.get(u);
     } 
+
+    /**
+     * Inizia una nuova conversazione con l'utente U.
+     * Al momento della creazione viene creata anche una Conversazione tra u e this
+     * @param u utente con cui iniziare una nuova conversazione
+     * @throws NullPointerException se u è null 
+     */
+    public Conversazione inizia(Utente u){
+        Objects.requireNonNull(u);
+        Conversazione c = new Conversazione(this, u);
+        conversazioni.put(u, c);
+        /**
+         * devo creare una conversazione anche nella mappa delle conversazioni
+         * di u. Il riferimento alla conversazione è sempre lo stesso, quindi è uguale tra
+         * this e u (credo)
+        */
+        u.conversazioni.put(this, c);
+        return c;
+    }
+    /**
+     * @param u utente con cui riprendere la conversazione 
+     * @return Conversazione tra this e u
+     * @throws NullPointerException se u è null
+     * @throws IllegalArgumentException se this non ha ancora iniziato una conversazione con u
+     */
+    public Conversazione riprendi(Utente u){
+        Objects.requireNonNull(u);
+        if (!(conversazioni.containsKey(u))) throw new IllegalArgumentException("Utente non presente, crea prima una nuova conversazione");
+        return conversazioni.get(u);
+    }
+    
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi mandati da this
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getInviati(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).sent;
+    }
+
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi ricevuti da this
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getRicevuti(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).recived;
+    }
+
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi mandati da this (che this non ha ancora letto)
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getUnread(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).unread;       
+    }
 
 
     @Override
@@ -70,9 +136,4 @@ public class Utente {
         final Utente o = (Utente)obj;
         return (o.nome.equals(this.nome));
     }
-
-    public static void main(String[] args) {
-        //PROVA A CREARAE TUTTO, MAPPA E VEDERE SE STAMPA
-    }
-
 }
