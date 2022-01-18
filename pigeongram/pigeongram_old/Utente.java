@@ -1,4 +1,4 @@
-package pigeongram;
+package pigeongram_old;
 import java.util.*;
 
 /**
@@ -14,13 +14,14 @@ import java.util.*;
  */
 
 
+
 public class Utente {
     public final String nome;
     private final String psw;
     /** la variabile di istanza conversazioni permette di associare a this
      * una serie di conversazioni con vari utenti
      */
-    public final Map<Utente, Conversazione> conversazioni;
+    public final Map<Utente, old_Conversazione> conversazioni;
 
     /**
      * Inizializza un nuovo utente con una nuova password. Al momento
@@ -36,16 +37,7 @@ public class Utente {
         if (nome.isEmpty() || psw.isEmpty()) throw new IllegalArgumentException();
         this.nome = nome;
         this.psw = psw;
-        this.conversazioni = new HashMap<Utente, Conversazione>();
-    }
-
-    /**
-     * this invia un messaggio ad u
-     * @param u
-     */
-    public void invia(Utente u, String s){
-        Conversazione c = this.riprendi(u);
-        c.invia(new Messaggio(this, u, s));
+        this.conversazioni = new HashMap<Utente, old_Conversazione>();
     }
 
     /**
@@ -62,6 +54,18 @@ public class Utente {
         return str;
     }
 
+    /**
+     * Restituisce la conversazione con l'utente u. Solleva una eccezione se 
+     * utente è null.
+     * Se u non è presente nelle conversazioni di this solleva una eccezione di tipo IllegalArgumentExc
+     * @param u utente
+     * @return conversazione di this con u
+     */
+    public old_Conversazione getConversazioni(Utente u){
+        Objects.requireNonNull(u);
+        if (!(this.conversazioni.containsKey(u))) throw new IllegalArgumentException();
+        return this.conversazioni.get(u);
+    } 
 
     /**
      * Inizia una nuova conversazione con l'utente U.
@@ -69,30 +73,55 @@ public class Utente {
      * @param u utente con cui iniziare una nuova conversazione
      * @throws NullPointerException se u è null 
      */
-    public Conversazione inizia(Utente u){
+    public old_Conversazione inizia(Utente u){
         Objects.requireNonNull(u);
-        if (conversazioni.containsKey(u)) return conversazioni.get(u);
-        Conversazione c = new Conversazione(this, u);
+        old_Conversazione c = new old_Conversazione(this, u);
         conversazioni.put(u, c);
         /**
          * devo creare una conversazione anche nella mappa delle conversazioni
          * di u. Il riferimento alla conversazione è sempre lo stesso, quindi è uguale tra
          * this e u (credo)
         */
-        u.inizia(this);
+        u.conversazioni.put(this, c);
         return c;
     }
     /**
-     * Sostanzialmente è un getConversazione tra this e u
      * @param u utente con cui riprendere la conversazione 
      * @return Conversazione tra this e u
      * @throws NullPointerException se u è null
      * @throws IllegalArgumentException se this non ha ancora iniziato una conversazione con u
      */
-    public Conversazione riprendi(Utente u){
+    public old_Conversazione riprendi(Utente u){
         Objects.requireNonNull(u);
         if (!(conversazioni.containsKey(u))) throw new IllegalArgumentException("Utente non presente, crea prima una nuova conversazione");
         return conversazioni.get(u);
+    }
+    
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi mandati da this
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getInviati(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).sent;
+    }
+
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi ricevuti da this
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getRicevuti(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).recived;
+    }
+
+    /**
+     * @param u Utente di cui si vogliono conoscere i messaggi mandati da this (che this non ha ancora letto)
+     * @return Messaggi inviati da this a u
+     */
+    public List<Messaggio> getUnread(Utente u){
+        Objects.requireNonNull(u);
+        return riprendi(u).unread;       
     }
 
 

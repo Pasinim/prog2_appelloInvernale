@@ -1,46 +1,72 @@
 package pigeongram;
 import java.util.*;
+
 public class Conversazione {
-    //variabili di istanza che rappresentano mittente e destinatario
     public final Utente m, d;
-    //V.I. che rappresenta i messaggi che m ha mandato a d
-    public final List<Messaggio> sent;
-    //V.I. che rappresenta i messaggi che d ha mandato a m
-    public final List<Messaggio> recived;
-    //V.I. che rappresenta i messaggi che d ha mandato a m e che non ha ancora letto
-    public final List<Messaggio> unread;
+    //V.I. che rappresenta i messaggi che m manda a d. Se true = unread
+    public final Map<Messaggio, Boolean> ricevuti;
+    //public final List<Messaggio> inviati;
+    public final List<Messaggio> tuttiMsg;
 
-    /**
-     * Solleva una eccezione se mittente e destinatario sono lo stesso utente
-     * @param mittente
-     * @param destinatario
-     */
-    public Conversazione(Utente mittente, Utente destinatario){
-        if (mittente.equals(destinatario)) throw new IllegalArgumentException("Impossibile avviare una Conversazione tra lo stesso utente");
-        this.m = Objects.requireNonNull(mittente);
-        this.d = Objects.requireNonNull(destinatario);
-        this.sent = new ArrayList<Messaggio>();
-        this.recived = new ArrayList<Messaggio>();
-        this.unread = new ArrayList<Messaggio>();
+    public Conversazione(Utente m, Utente d){
+        this.m = Objects.requireNonNull(m);
+        this.d = Objects.requireNonNull(d);
+       // this.inviati = new ArrayList<Messaggio>();
+        this.tuttiMsg = new ArrayList<Messaggio>();
+        this.ricevuti = new HashMap<Messaggio, Boolean>();
+    }
+
+    public void invia(Messaggio msg){
+        Objects.requireNonNull(msg);
+        // m -> d
+        tuttiMsg.add(msg);
+        /**
+         * Unread fa riferimento ai messaggi che d ha ricevuto da m.
+         * true = messaggio NON letto
+         */
+        d.riprendi(m).ricevuti.put(msg, true);
+        //devo prendere la conversazione che d ha con m e aggiungere questo messaggio
+        //d.getConversazione(m).put(unread);
+        //quando this manda un messaggio a u devo segnare automaticamente tutti
+        //i messaggi di this letti
+        markLetto();
+
     }
 
     /**
-     * Quando m manda a d il messaggio deve anche essere aggiunto ai messaggi ricevuti di d
-     * @param messaggio
+     * Segna come "letto" tutti i messaggi ricevuti di u
+     * @param u Utente
      */
-    public void send(String messaggio){
-        Objects.requireNonNull(messaggio);
-        Messaggio msg = new Messaggio(m, d, messaggio);
-        this.sent.add(msg);
-        d.riprendi(m).unread.add(msg);
-    } 
+    private void markLetto(){
 
-    @Override
-    public String toString(){
-        String str = "";
-        for (int i = 0; i < sent.size(); i++)
-            str += sent.get(i).toString() + "\n";
-        return str;
+        List<Messaggio> nonLetti= this.getNonLetti();
+        for (int i = 0; i < nonLetti.size(); i++)
+            ricevuti.put(nonLetti.get(i), false);
     }
 
+    /**
+     * Restituisce tutti i messaggi ricevuti
+     */
+    public List<Messaggio> getTutti(){
+        List<Messaggio> tutti = new ArrayList<>(ricevuti.keySet());
+        return tutti;
+    }
+
+    /**
+     * Restituisce solo i messaggi non letti di this
+     */
+    public List<Messaggio> getNonLetti(){
+        List<Messaggio> nonLetti = new ArrayList<>();
+        /**
+         * creo un iteratore sulle entries della mappa poi, con una altra entry, verifico se il messaggio
+         * è stato letto oppure no
+         */
+        Iterator<Map.Entry<Messaggio, Boolean>> it = ricevuti.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry<Messaggio, Boolean> entry = it.next();
+            if (entry.getValue())
+                nonLetti.add(entry.getKey());
+        }
+        return nonLetti; 
+    }
 }
