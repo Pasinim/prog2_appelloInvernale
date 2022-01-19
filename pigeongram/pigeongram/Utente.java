@@ -45,7 +45,7 @@ public class Utente {
      */
     public void invia(Utente u, String s){
         Conversazione c = this.riprendi(u);
-        c.invia(new Messaggio(this, u, s));
+        c.invia(u, s);
     }
 
     /**

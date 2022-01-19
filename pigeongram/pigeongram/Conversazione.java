@@ -1,72 +1,134 @@
 package pigeongram;
 import java.util.*;
+/**
+ * OVERVIEW: Le istanze di questa classe rappresentano una conversazione tra due utenti
+ * AF: msg.toString() se msg.size() > 0
+ *     "Nessun messaggio presente nella conversazione" se msg.size() == 0
+ * IR:
+ *      m != null
+ *      d != null
+ *      msg != null, ogni messaggio presente in msg != null
+ *      ultimoLetto_m, ultimoLetto_d >= 0
+ *      i messaggi inviati devono essere esclusiavamente tra m e d
+ *      
+ */
 
 public class Conversazione {
+    /**
+     * Le seguenti v.i. rappresentano la lista dei messaggi scambiati (in ordine cronologico)
+     * e gli indici che permettono di tenere traccia dell'ultimo messaggio letto dei due utenti
+     */
+    public final List<Messaggio> msg;
+    private int ultimoLetto_m = 0;
+    private int ultimoLetto_d = 0;
     public final Utente m, d;
-    //V.I. che rappresenta i messaggi che m manda a d. Se true = unread
-    public final Map<Messaggio, Boolean> ricevuti;
-    //public final List<Messaggio> inviati;
-    public final List<Messaggio> tuttiMsg;
-
-    public Conversazione(Utente m, Utente d){
-        this.m = Objects.requireNonNull(m);
-        this.d = Objects.requireNonNull(d);
-       // this.inviati = new ArrayList<Messaggio>();
-        this.tuttiMsg = new ArrayList<Messaggio>();
-        this.ricevuti = new HashMap<Messaggio, Boolean>();
+    /**
+     * Inizializza una nuova conversazione tra gli utenti mittente e destinatario.
+     * @param mittente Utente 1 
+     * @param destinatario Utente 2
+     * @throws NullPointerException se mittente o destinatario sono riferimenti a null
+     */
+    public Conversazione(Utente mittente, Utente destinatario){
+        m = Objects.requireNonNull(mittente);
+        d = Objects.requireNonNull(destinatario);
+        msg = new ArrayList<Messaggio>();
     }
 
-    public void invia(Messaggio msg){
-        Objects.requireNonNull(msg);
-        // m -> d
-        tuttiMsg.add(msg);
-        /**
-         * Unread fa riferimento ai messaggi che d ha ricevuto da m.
-         * true = messaggio NON letto
-         */
-        d.riprendi(m).ricevuti.put(msg, true);
-        //devo prendere la conversazione che d ha con m e aggiungere questo messaggio
-        //d.getConversazione(m).put(unread);
-        //quando this manda un messaggio a u devo segnare automaticamente tutti
-        //i messaggi di this letti
-        markLetto();
+    /**
+     * Manda un messaggio da un utente all'altro nella conversazione this
+     * @param Mittente mittente del messaggio m
+     * @param m Messaggio da mandare 
+     * @throws NullPointerException se m o mittente sono null
+     * @throws IllegalArgumentException se mittente non fa parte della conversazione
+     * @throws IllegalArgumentException se m è una stringa vuota
+     */
+    /** **Come funziona?** Prima di inviare effettivamente il messsaggio è necessario controllare
+     * che `mittente` sia this.m oppure this.d. Se `mittente` è this.m il destinatario sarà automaticamente
+     * this.d, altrimenti il destinatario è this.m. Di conseguenza di provvede ad aggiornare il relativo indice 
+     * per i messaggi non letti
+     * 
+     */
+    public void invia(Utente mittente, String m){
+        if (!(checkUtente(mittente))) throw new IllegalArgumentException("Utente non valido nella conversazione");        
+        Objects.requireNonNull(m);
+        Objects.requireNonNull(mittente);
+        if (m.isEmpty()) throw new IllegalArgumentException("Impossibile mandare un messaggio vuoto");
+        Utente destinatario = null;
+        if (this.m.equals(mittente)) 
+            destinatario = this.m;
+        else 
+            destinatario = this.d;
+
+        this.msg.add(new Messaggio(mittente, destinatario, m));
+        if (this.m.equals(mittente)) 
+            this.ultimoLetto_m = msg.size();
+        else 
+            this.ultimoLetto_d = msg.size();
 
     }
 
     /**
-     * Segna come "letto" tutti i messaggi ricevuti di u
-     * @param u Utente
+     * Restituisce solamente i messaggi non letti di u nella conversazione this
+     * @param u Utente di cui si vogliono conoscere i messaggi non letti
+     * @return Messaggi non letti da u
      */
-    private void markLetto(){
+    public List<Messaggio> nonLetti(Utente u){
+        if (!(checkUtente(u))) throw new IllegalArgumentException("Utente non presente nella conversazione corrente");
+        int idx;
+        if (this.m.equals(u)) 
+            idx = this.ultimoLetto_m; 
+        else 
+            idx = this.ultimoLetto_d;
 
-        List<Messaggio> nonLetti= this.getNonLetti();
-        for (int i = 0; i < nonLetti.size(); i++)
-            ricevuti.put(nonLetti.get(i), false);
-    }
-
-    /**
-     * Restituisce tutti i messaggi ricevuti
-     */
-    public List<Messaggio> getTutti(){
-        List<Messaggio> tutti = new ArrayList<>(ricevuti.keySet());
-        return tutti;
-    }
-
-    /**
-     * Restituisce solo i messaggi non letti di this
-     */
-    public List<Messaggio> getNonLetti(){
-        List<Messaggio> nonLetti = new ArrayList<>();
-        /**
-         * creo un iteratore sulle entries della mappa poi, con una altra entry, verifico se il messaggio
-         * è stato letto oppure no
-         */
-        Iterator<Map.Entry<Messaggio, Boolean>> it = ricevuti.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<Messaggio, Boolean> entry = it.next();
-            if (entry.getValue())
-                nonLetti.add(entry.getKey());
+        List<Messaggio> unread = new ArrayList<Messaggio>();
+        for (int i = idx; i < msg.size(); i++){
+            unread.add(msg.get(i));
         }
-        return nonLetti; 
+        return unread;
     }
+
+    @Override
+    public String toString(){
+        if (msg.size() == 0) return "Nessun messaggio presente nella conversazione";
+        else {
+            String str = "[";
+            for (int i = 0; i < msg.size(); i ++)
+                str += msg.get(i).toString() + ", ";
+            return str + "]";
+        }
+    }
+
+    /**
+     * Controlla che l'utente u sia un utente valido (cioè che sia mittente o destinatario)
+     * nella conversazione this
+     * @param u Utente su cui effettuare il check
+     * @return true se u = this.m oppure u = this.d
+     */
+    private Boolean checkUtente(Utente u){
+        Objects.requireNonNull(u);
+        return (this.m.equals(u) || this.d.equals(u));
+    }
+    
+
+    public static void main(String[] args) {
+        Utente u1 = new Utente("A", "1");
+        Utente u2 = new Utente("B", "1");
+        Conversazione c = new Conversazione(u1, u2);
+        c.invia(u1, "ciao" );
+        c.invia(u1, "bro" );
+        List<Messaggio> l = c.nonLetti(u2);
+        System.out.println("Non letti di A: " + l.toString());
+        c.invia(u2, "lol" );
+        System.out.println("Tutti msg: " + c.toString());
+        l = c.nonLetti(u2);
+        System.out.println("Non letti di A: " + l.toString());
+        l = c.nonLetti(u1);
+        System.out.println("Non letti di B: " + l.toString());
+        c.invia(u1, "basta ciao"); 
+        l = c.nonLetti(u2);
+        System.out.println("Non letti di A: " + l.toString());
+
+
+    }
+
 }
