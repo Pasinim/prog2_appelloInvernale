@@ -1,4 +1,4 @@
-package piastrelle.piastrelle;
+package piastrelle;
 import java.util.*;
 public interface Rivestimento{
     public int getSuperficie();

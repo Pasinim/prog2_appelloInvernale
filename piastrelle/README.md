@@ -1,0 +1,1 @@
+L'implementazione non è corretta, bisogna mantenere una mappa che memorizza il componente della pavimentazione con la relativa quantità
