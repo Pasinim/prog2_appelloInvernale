@@ -1,4 +1,6 @@
 # Musica
+## Osservazioni
+- Per rimuovere tutti i whitespaces posso fare `String str = str.replace(" ", "");`
 ## Album
 **Titolo + Brani + Durata complessiva**.
 Elenco ordinato, non vuoto e senza ripetizioni -> `List` ammette ripetizioni, quindi devo controllare che non venga inserito un elemento duplicato. `Set` non va bene perchè l'elenco deve essere *ordinato*.

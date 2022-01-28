@@ -40,9 +40,23 @@ public class Playlist {
         Iterator<Album.Brano> it = brani.iterator();
         while (it.hasNext()){
             Album.Brano b = it.next();
-            if (ret.contains(b)) continue;
+            if (ret.contains(b.getAlbum())) continue;
             else ret.add(b.getAlbum());
         }
         return ret;
+    }
+
+    @Override
+    public String toString(){
+        String str = "Nome playlist: " + this.nome + "\n";
+        Durata somma = new Durata(0);
+        Iterator<Album.Brano> it = brani.iterator();
+        for (int i = 1; i <= brani.size(); i++){
+            Album.Brano curr = it.next();
+            str += String.format("%d - %s, (da \"%s\") \n", i, curr.toString(), curr.getAlbum().titolo.toString());
+            somma = somma.sommaDurata(curr.durata);
+        }
+        str += "Durata totale: " + somma.toString() + "\n\n";
+        return str;
     }
 }

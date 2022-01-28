@@ -1,0 +1,17 @@
+Nome playlist: La mia gioventù
+1 - "Another Brick in the Wall, Part 1" (00:03:11), (da "The wall") 
+2 - "In the Flesh?" (00:03:16), (da "In the Court of the Crimson King") 
+3 - "Another Brick in the Wall, Part 2" (00:03:59), (da "The wall") 
+4 - "Hey You" (00:04:40), (da "The wall") 
+5 - "Is There Anybody Out There?" (00:02:44), (da "The wall") 
+6 - "Another Brick in the Wall, Part 2" (00:03:59), (da "In the Court of the Crimson King") 
+Durata totale: 00:21:49
+Nome playlist: I Pink Floyd
+1 - "Mother" (00:05:32), (da "The wall") 
+2 - "Hey You" (00:04:40), (da "The wall") 
+Durata totale: 00:10:12
+Nome playlist: Cover
+1 - "In the Flesh?" (00:03:16), (da "Naked City") 
+2 - "The Thin Ice" (00:02:27), (da "Naked City") 
+3 - "Run Like Hell" (00:04:23), (da "Naked City") 
+Durata totale: 00:10:06

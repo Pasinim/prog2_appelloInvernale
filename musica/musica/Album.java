@@ -40,6 +40,11 @@ public class Album {
         return str;
     }
     
+    /**
+     * Nome playlist: Fusa
+    1 - "Another Brick in the Wall, Part 1" (03:11), (da "The wall")
+     */
+    
 
     class Brano {
         public final String titolo;
