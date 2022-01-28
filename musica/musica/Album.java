@@ -1,13 +1,32 @@
 import java.util.*;
 /**
- * OVERVIEW:
+ * OVERVIEW: Le istanze di questa classe rappresentano un album, identificato da un titolo, da un insieme di brani e da un insieme di corrispondenti durate.
+ *           Le istanze di questa classe sono immutabili, per questo motivo viene controllato IR solamente nel costruttore.
+ * AF
+ * IR: 
+ *      brani.size == durate.size
+ *      titolo != NULL, titolo non vuoto
+ *      brani != NULL, durate != NULL
  */
 
 public class Album {
     public final String titolo;
-    public final List<Album.Brano> brani = new ArrayList<>();
-    public final List<Durata> durate;
+    //Le liste sono dichiarate come private dato che la rappresentazione non deve essere esposta
+    //e un utente non può aggiungere/rimuovere brani a piacimento dall'album
+    private final List<Album.Brano> brani = new ArrayList<>();
+    private final List<Durata> durate;
 
+    /**
+     * Inizializza un nuovo album contenente i titoli dei brani con le corrispondenti durate
+     * @param t Titolo dell'album
+     * @param titoli Titoli delle canzoni che compongono l'album
+     * @param d Durate delle canzoni che compongono l'album
+     * @throws NullPointerException se titoli o d sono nulll 
+     *                              un elemento all'interno di titoli o d è null
+     *                              un elemento di titoli è una stringa vuota
+     *                              se titolo è null o è una stringa vuota
+     * @throws IllegalArgument se titoli e d hanno due lunghezze differenti
+     */
     public Album (String t, List<String> titoli, List<Durata> d){
         this.titolo = Objects.requireNonNull(t);
         this.durate = Objects.requireNonNull(d);
@@ -20,7 +39,13 @@ public class Album {
         }
     }
 
+    /**
+     * @param idx indice
+     * @return brano di indice idx all'interno di this
+     * @throws IllegalArgumentException se idx > brani.size o se idx < 0
+     */
     public Album.Brano getBrano(int idx){
+        if (idx > brani.size() || idx < 0) throw new IllegalArgumentException("Errore nell'indice");
         return this.brani.get(idx);
     }
         
@@ -39,21 +64,22 @@ public class Album {
         str += "Durata totale: " + somma.toString() + "\n";
         return str;
     }
-    
+      
     /**
-     * Nome playlist: Fusa
-    1 - "Another Brick in the Wall, Part 1" (03:11), (da "The wall")
+     * Le istanze di questa classe interna rappresentano un brano. Creando questa classe come interna è possibile creare un brano solamente
+     * se viene "associato" ad un album. Ogni brano è identificato da un titolo e da una durata
+     * AF:
+     * IR:  
+     *      titolo != NULL, titolo non vuoto
+     *      durata != null
      */
-    
-
     class Brano {
         public final String titolo;
         public final Durata durata;
-
         /**
-         * Inizializza un nuovo brano contenuto in this
-         * @param t
-         * @param d
+         * Inizializza un nuovo brano contenuto appartenente a this
+         * @param t titolo del brano
+         * @param d durata del brano
          * @throws NullPointerException se d o t sono null
          * @throws IllealArgumentExc se t è vuota
          */

@@ -1,6 +1,5 @@
 import java.util.*;
 
-import javax.naming.NamingEnumeration;
 public class TestSwitch {
     public static void main(String[] args) {
         List<String> titoli_canzoni = new ArrayList<>();
@@ -45,8 +44,7 @@ public class TestSwitch {
                         //System.out.println(String.format("\tAggiungo alla playlist \"%s\", la traccia %d dell'album %d, ossia %s di %s\n",
                          //                   titolo.toString(), numero_canzone, numero_album, albums.get(numero_album-1).getBrano(numero_canzone - 1), albums.get(numero_album - 1).titolo.toString()));
                         Album a = albums.get(numero_album - 1);
-                        brani_playlist.add(a.getBrano(numero_canzone - 1));
-                        
+                        brani_playlist.add(a.getBrano(numero_canzone - 1));  
                     }
                     Playlist p = new Playlist(titolo, brani_playlist, durate_canzoni);
                     plays.add(p);
