@@ -56,17 +56,12 @@ public class Album implements Iterable<Album.Brano> {
         
     @Override
     public String toString(){
-        String str = "Titolo album: ";
-        str += this.titolo.toString() + "\n";
-        Durata somma = new Durata(0);
+        String str = "";
+        str += String.format("Titolo album: %s\n", this.titolo.toString());
         Iterator<Brano> it = brani.iterator();
-        for (int i = 1; i <= brani.size(); i++){
-            Album.Brano curr = it.next();
-            //if (!(it.hasNext())) throw new IllegalAccessError();
-            str += String.format("%d - %s \n", i, curr.toString());
-            somma = somma.sommaDurata(curr.durata);
-        }
-        str += "Durata totale: " + somma.toString() + "\n";
+            for (int i = 1; it.hasNext(); i++)
+                str += String.format("%d - %s \n", i, it.next().toString());
+        str += "Durata totale: " + durata_complessiva.toString() + "\n";
         return str;
     }
 
