@@ -2,10 +2,10 @@ import java.util.*;
 /**
  * 
  */
-public class Playlist {
+public class Playlist implements Iterable<Album.Brano>{
     public final String nome;
-    public final List<Album.Brano> brani;
-    public final List<Durata> durate;
+    private final List<Album.Brano> brani;
+    private final List<Durata> durate;
 
     public Playlist(String n, List<Album.Brano> b, List<Durata> d ){
         if (n.isEmpty()) throw new IllegalArgumentException();
@@ -44,6 +44,49 @@ public class Playlist {
             else ret.add(b.getAlbum());
         }
         return ret;
+    }
+
+    /**
+     * @return Durata totale della playlist
+     */
+    public Durata getDurata(){
+        Iterator<Durata> it = durate.iterator();
+        Durata somma = new Durata(0);
+        while (it.hasNext())
+            somma = it.next().sommaDurata(somma);
+        return somma;
+    }
+
+
+    /** Restituisce una nuova playlist ottenuta unendo this con o.
+     * L'ordine dei brani è uguale all'ordine in this seguita dai brani (nello stesso ordine)
+     * in o. Se dei brani sono già presenti NON vengono reinseriti nuovamente 
+     * @param s Titolo della playlist
+     * @param o Playlist da fondere
+     * @return Playlist fusa
+     * @throws NullPointer se o == null
+     */
+    public Playlist unisci(String s, Playlist o){
+        Objects.requireNonNull(o);
+        Objects.requireNonNull(s);
+        ArrayList<Album.Brano> brani_fusi = new ArrayList<>();
+        brani_fusi.addAll(this.brani);
+
+        Iterator<Album.Brano> it = o.iterator();
+        while (it.hasNext()){
+            Album.Brano b = it.next();
+            if (!(brani_fusi.contains(b))) 
+            brani_fusi.add(b);
+        }
+        Durata durata_tot = this.getDurata().sommaDurata(o.getDurata());
+        return new Playlist(s, brani_fusi, durata_tot);
+    }
+
+    /**
+     * è ridondante? Lo ho già in album, devo ridefinirlo
+     */
+    public Iterator<Album.Brano> iterator() {
+        return brani.iterator();
     }
 
     @Override

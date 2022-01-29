@@ -4,17 +4,17 @@ import java.util.*;
  *           Le istanze di questa classe sono immutabili, per questo motivo viene controllato IR solamente nel costruttore.
  * AF
  * IR: 
- *      brani.size == durate.size
  *      titolo != NULL, titolo non vuoto
  *      brani != NULL, durate != NULL
+ *      durata complessiva > 0 (viene però controllato quando sommo tutte le durate)
  */
 
-public class Album {
+public class Album implements Iterable<Album.Brano> {
     public final String titolo;
     //Le liste sono dichiarate come private dato che la rappresentazione non deve essere esposta
     //e un utente non può aggiungere/rimuovere brani a piacimento dall'album
     private final List<Album.Brano> brani = new ArrayList<>();
-    private final List<Durata> durate;
+    private final Durata durata_complessiva;
 
     /**
      * Inizializza un nuovo album contenente i titoli dei brani con le corrispondenti durate
@@ -29,14 +29,17 @@ public class Album {
      */
     public Album (String t, List<String> titoli, List<Durata> d){
         this.titolo = Objects.requireNonNull(t);
-        this.durate = Objects.requireNonNull(d);
+        Objects.requireNonNull(d);
         Objects.requireNonNull(titoli);
+        Durata d_totale = new Durata(0);
         if (titoli.size() != d.size()) throw new IllegalArgumentException("Titoli e durate dei brani devono avere la stessa dimensione");
         for(int i=0; i < d.size(); i++){
             if ((d.get(i)) == null || titoli.get(i) == null || titoli.get(i).isEmpty())
                 throw new NullPointerException();
             brani.add(new Brano(titoli.get(i), d.get(i)));
+            d_totale = d_totale.sommaDurata(d.get(i));
         }
+        durata_complessiva = d_totale;
     }
 
     /**
@@ -63,6 +66,15 @@ public class Album {
         }
         str += "Durata totale: " + somma.toString() + "\n";
         return str;
+    }
+
+    /**
+     * Restituisce un iteratore che itera sui brani dell'album
+     * @return iteratore
+     */
+    @Override
+    public Iterator<Album.Brano> iterator() {
+      return brani.iterator();
     }
       
     /**
