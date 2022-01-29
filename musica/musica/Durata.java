@@ -2,8 +2,10 @@ import java.util.*;
 /**
  * OVERVIEW: Le istanze di questa classe rappresentano la durata di un file musicale. È possibile creare delle variabili public dato che sono tutte dichiarate come
  * final. Ogni durata è espressa dalle ore, minuti e secondi.
+ * Le istanze di questa classe sono immutabili
  * AF: hh:mm:ss
- * IR:      h >= 0,
+ * IR:      La classe è immutabile, quindi basta controllare IR in costruzione
+ *          h >= 0,
             m >= 0,
             m < 60,
             s >= 0,
@@ -28,20 +30,24 @@ public class Durata {
      * @param str stringa nel formato "hh:mm:ss"
      * @throws IllegalArgumentException se la durata non è nel formato corretto
      */
-    public Durata(String str){
+    static Durata str_to_Durata(String str){
         String tkns[] = str.split(":");
-        if (tkns.length > 3 || tkns.length <= 0) throw new IllegalArgumentException("La lunghezza deve essere > 3 e <= 0. Trovato: " + tkns.length);
-        if (tkns.length == 2) {
-            this.s = Integer.valueOf(tkns[1]);
-            this.m = Integer.valueOf(tkns[0]);
-            this.h = 0;    
+        int ore, min, sec;
+        if (tkns.length > 3) throw new IllegalArgumentException("La lunghezza deve essere > 3 e <= 0. Trovato: " + tkns.length);
+        if (tkns.length < 3){
+            ore = 0;
+            if (tkns.length < 2) {
+                min = 0;    
+                sec = Integer.valueOf(tkns[0]);
+            }else {
+                min = Integer.valueOf(tkns[1]);
+            }
         }else{
-            this.s = Integer.valueOf(tkns[2]);
-            this.m = Integer.valueOf(tkns[1]);
-            this.h = Integer.valueOf(tkns[0]);
+            min = Integer.valueOf(tkns[1]);
+            ore = Integer.valueOf(tkns[0]);
         }
-        
-        repOK();
+        sec = Integer.valueOf(tkns[tkns.length - 1]);
+        return new Durata(ore * 3600 + min * 60 + sec);
     }
 
     /**
@@ -88,5 +94,10 @@ public class Durata {
             this.s >= 0 &&
             this.s < 60
         );
+    }
+
+    public static void main(String[] args) {
+        Durata d = str_to_Durata("1");
+        System.out.println(d.toString());
     }
 }

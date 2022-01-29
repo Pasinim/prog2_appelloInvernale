@@ -1,17 +1,36 @@
 import java.util.*;
 /**
- * 
+ * OVERVIEW: Le istanze di questa classe rappresentano una playlist, identificata da un nome
+ * da un insieme di brani e da una durata complessiva, ottenuta dalla somma di tutti i brani che la
+ * compongono
+ * AF
+ * IR:
+ *      nome != null, nome non vuoto.
+ *      brani != null
+ *      durata totale >= 0
  */
 public class Playlist implements Iterable<Album.Brano>{
+    /**
+     * VARIABILI DI ISTANZA:
+     * La classe è immutabile, per questo motivo sia brani che durata_totale
+     * vengono dichaiarate come private final. Final impedisce che il rigerimento alla varabile
+     * cambi mentre private impedisce ad un utente di aggiungere elementi alla lista oppure
+     * di sommare altre durate a durata_totale.
+     */
     public final String nome;
     private final List<Album.Brano> brani;
-    private final List<Durata> durate;
+    private final Durata durata_totale;
 
-    public Playlist(String n, List<Album.Brano> b, List<Durata> d ){
+    
+    public Playlist(String n, List<Album.Brano> b){
         if (n.isEmpty()) throw new IllegalArgumentException();
         this.nome = Objects.requireNonNull(n);
         this.brani = Objects.requireNonNull(b);
-        this.durate = Objects.requireNonNull(d);
+        Iterator<Album.Brano> it = b.iterator();
+        Durata sum = new Durata(0);
+        while (it.hasNext())
+            sum = sum.sommaDurata(it.next().durata);
+        durata_totale = sum;
     }
 
     public List<Album.Brano> getBrani(){
@@ -50,11 +69,7 @@ public class Playlist implements Iterable<Album.Brano>{
      * @return Durata totale della playlist
      */
     public Durata getDurata(){
-        Iterator<Durata> it = durate.iterator();
-        Durata somma = new Durata(0);
-        while (it.hasNext())
-            somma = it.next().sommaDurata(somma);
-        return somma;
+        return this.durata_totale;
     }
 
 
@@ -78,8 +93,7 @@ public class Playlist implements Iterable<Album.Brano>{
             if (!(brani_fusi.contains(b))) 
             brani_fusi.add(b);
         }
-        Durata durata_tot = this.getDurata().sommaDurata(o.getDurata());
-        return new Playlist(s, brani_fusi, durata_tot);
+        return new Playlist(s, brani_fusi) ;
     }
 
     /**

@@ -19,7 +19,7 @@ public class TestSwitch {
                         line = input.nextLine();
                         if (line.charAt(0) == '.') break;
                         String canzone[] = line.split(" - ");
-                        Durata durata = new Durata(canzone[0]);
+                        Durata durata = Durata.str_to_Durata(canzone[0]);
                         durate_canzoni.add(durata);
                         titoli_canzoni.add(canzone[1]);  
                     }
@@ -46,7 +46,7 @@ public class TestSwitch {
                         Album a = albums.get(numero_album - 1);
                         brani_playlist.add(a.getBrano(numero_canzone - 1));  
                     }
-                    Playlist p = new Playlist(titolo, brani_playlist, durate_canzoni);
+                    Playlist p = new Playlist(titolo, brani_playlist);
                     plays.add(p);
                     break;
 

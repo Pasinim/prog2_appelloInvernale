@@ -16,6 +16,7 @@ public class Album implements Iterable<Album.Brano> {
     private final List<Album.Brano> brani = new ArrayList<>();
     private final Durata durata_complessiva;
 
+
     /**
      * Inizializza un nuovo album contenente i titoli dei brani con le corrispondenti durate
      * @param t Titolo dell'album
@@ -27,6 +28,7 @@ public class Album implements Iterable<Album.Brano> {
      *                              se titolo è null o è una stringa vuota
      * @throws IllegalArgument se titoli e d hanno due lunghezze differenti
      */
+
     public Album (String t, List<String> titoli, List<Durata> d){
         this.titolo = Objects.requireNonNull(t);
         Objects.requireNonNull(d);
