@@ -1,7 +1,26 @@
 # Cosa ho sbagliato nell'esame?
-1. Avere un metodo parziale può avere senso, ma non ha senso avere un costruttore parziale dato che, se l'utente viola le precondizioni, viene creato comunque un oggetto che non soddisfa IR. Devo quindi **sempre** rendere il costruttore totale, lanciando *eccezioni*.
-2. Le *eccezioni* devono essere riportate al **livello di astrazione** del chiamante, come dice la Liskov.
-3. Se in un metodo chiamo un costruttore ha senso controllare **prima** della sua invocazione se IR è rispettata. In questo modo mi rendo conto di un eventuale errore nella porzione di codice in cui viene effettivamente sollevata l'eccezione, altrimenti si solleverebbe nel costruttore e non avrei chiaro dove si trova il problema.
+1. Avere un metodo parziale può avere senso, ma non ha senso avere un costruttore parziale dato che, se l'utente viola le precondizioni, viene creato comunque un oggetto che non soddisfa IR. Devo quindi *sempre* rendere il costruttore totale, lanciando *eccezioni*.
+2. Le *eccezioni* devono essere riportate al **livello di astrazione** del chiamante, come dice la Liskov:
+    ```java
+    public class Ecc {
+        private final List<String> str;
+        public Ecc(List<String> s){
+            Objects.requireNonNull(s);
+            if (s.isEmpty()) 
+                throw new IllegalArgumentException("La stringa non può essere nulla");
+            this.str = List.copyOf(s);
+        }
+        
+        public void metodoSbagliato(List<String> str){
+            try{
+                Ecc a = new Ecc(str);
+            }catch(IllegalArgumentException e){
+                throw new IllegalArgumentException("Errore in metodoSbagliato (" + e.toString() + ")" );
+                }
+            }
+    }
+        ```
+3. Se in un metodo chiamo un costruttore ha senso controllare *prima* della sua invocazione se IR è rispettata. In questo modo mi rendo conto di un eventuale errore nella porzione di codice in cui viene effettivamente sollevata l'eccezione, altrimenti si solleverebbe nel costruttore e non avrei chiaro dove si trova il problema.
 4. Il costruttore deve verificare le condizioni -> catturo le eccezioni e eventualmente spiego dove è l'errore. In questo modo le eccezioni sono leggibili dall'utente, devo ragionare a **livello dell'utente finale**. Se ho molte condizioni da verificare ha senso utilizzare il `try-catch` in  modo da catturare tutte le eccezioni.
 5. Ha senso sviluppare bene e con i dovuti riguardi *prima* le classi più piccole, in modo da far capire che si ha chiaro il ragionamento, per le classi più avanzate posso segnalare al docente la scarsità di tempo.
 6. Quando nel costruttore viene passata una lista devo prima **copiarla**. Così facendo l'utente è impossibilitato ad aggiungere elementi alla lista e non viene esposta la rappresentazione. Esempio:
@@ -27,5 +46,5 @@
     ```java
         public Costruttore_Lista(List<String> s){
         this.str = List.copyOf(s);
-        }
+            }
     ```
