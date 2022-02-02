@@ -11,7 +11,7 @@
 
 ## Album
 **Titolo + Brani + Durata complessiva**.
-Elenco ordinato, non vuoto e senza ripetizioni -> `List` ammette ripetizioni, quindi devo controllare che non venga inserito un elemento duplicato. `Set` non va bene perchè l'elenco deve essere *ordinato*.
+Elenco ordinato, non vuoto e senza ripetizioni -> ~`List` ammette ripetizioni, quindi devo controllare che non venga inserito un elemento duplicato. `Set` non va bene perchè l'elenco deve essere *ordinato*~. Il numero dei brani è fissato, infatti passo come paramentro una lista di brani al costruttore, quindi è già noto quante canzoni ci sono nell'album. **Per questo motivo si può semplicemente utilizzare un array**.
 Devo implementare un *iteratore* per iterare sulle canzoni.
 
 ## Brano 

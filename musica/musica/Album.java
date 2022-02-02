@@ -14,7 +14,9 @@ public class Album implements Iterable<Album.Brano> {
     //Le liste sono dichiarate come private dato che la rappresentazione non deve essere esposta
     //e un utente non può aggiungere/rimuovere brani a piacimento dall'album
     private final List<Album.Brano> brani = new ArrayList<>();
-    private final Durata durata_complessiva;
+    //è possibile dichiarare la durata come public perchè DUrata non ha metodi mutazionali. il metodo somma/sottr 
+    //restituisce una nuova durata, ma non può essere usata dato che è final. È un metodo di produzione somma?
+    public final Durata durata_complessiva;
 
 
     /**

@@ -5,7 +5,7 @@ public class TestSwitch {
         List<String> titoli_canzoni = new ArrayList<>();
         List<Durata> durate_canzoni = new ArrayList<>();
         List<Album> albums = new ArrayList<>();
-        List<Playlist> plays = new ArrayList<>();
+        List<Immutabile_Playlist> plays = new ArrayList<>();
         Scanner input = new Scanner(System.in);
         while (input.hasNextLine()){
             //System.out.println("Ciclo principale:");
@@ -46,7 +46,7 @@ public class TestSwitch {
                         Album a = albums.get(numero_album - 1);
                         brani_playlist.add(a.getBrano(numero_canzone - 1));  
                     }
-                    Playlist p = new Playlist(titolo, brani_playlist);
+                    Immutabile_Playlist p = new Immutabile_Playlist(titolo, brani_playlist);
                     plays.add(p);
                     break;
 
@@ -58,7 +58,7 @@ public class TestSwitch {
             }
         }
         input.close();
-        Iterator<Playlist> it = plays.iterator();
+        Iterator<Immutabile_Playlist> it = plays.iterator();
         while (it.hasNext())
             System.out.print(it.next().toString());
         //
