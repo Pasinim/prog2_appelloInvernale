@@ -22,7 +22,7 @@
      ```
     In questo modo l'eccezione viene riportata al giusto livello di astrazione:
     ```
-    |  Exception java.lang.IllegalArgumentException: Errore in metodoSbagliato (java.lang.IllegalArgumentException: La stringa non pu?² essere nulla)
+    |  Exception java.lang.IllegalArgumentException: Errore in metodoSbagliato (java.lang.IllegalArgumentException: La stringa non può essere nulla)
     |        at Ecc.metodoSbagliato (#2:13)
     |        at (#11:1)
     ```
