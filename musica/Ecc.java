@@ -14,7 +14,7 @@ public class Ecc {
         try{
             Ecc a = new Ecc(str);
         }catch(IllegalArgumentException e){
-            throw new IllegalArgumentException("Errore in metodoSbagliato (" + e.toString() + ")" );
+            throw new IllegalArgumentException("Errore in metodoSbagliato (" + e.getMessage() + ")" );
         }
     }
 
