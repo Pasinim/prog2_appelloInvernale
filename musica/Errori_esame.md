@@ -19,6 +19,10 @@
                 }
             }
         }
+    In questo modo l'eccezione viene riportata al giusto livello di astrazione:
+    `|  Exception java.lang.IllegalArgumentException: Errore in metodoSbagliato (java.lang.IllegalArgumentException: La stringa non pu?² essere nulla)
+|        at Ecc.metodoSbagliato (#2:13)
+|        at (#11:1) `
         
 3. Se in un metodo chiamo un costruttore ha senso controllare *prima* della sua invocazione se IR è rispettata. In questo modo mi rendo conto di un eventuale errore nella porzione di codice in cui viene effettivamente sollevata l'eccezione, altrimenti si solleverebbe nel costruttore e non avrei chiaro dove si trova il problema.
 4. Il costruttore deve verificare le condizioni -> catturo le eccezioni e eventualmente spiego dove è l'errore. In questo modo le eccezioni sono leggibili dall'utente, devo ragionare a **livello dell'utente finale**. Se ho molte condizioni da verificare ha senso utilizzare il `try-catch` in  modo da catturare tutte le eccezioni.
