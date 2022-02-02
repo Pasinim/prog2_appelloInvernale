@@ -1,3 +1,6 @@
+/**
+ * Esempio riportato in "Errori_esame", l'eccezione viene propagata al livello di astrazione del chiamante
+ */
 import java.util.*;
 public class Ecc {
     private final List<String> str;
