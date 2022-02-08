@@ -44,8 +44,8 @@ public class VettoreDenso implements Vettore {
         if (alpha == 0) return new VettoreNullo(this.dim());
         final int[] mult = new int[this.dim()];
         for (int i = 0; i < vect.length; i++)
-            mult[i] = alpha * this.val[i];
-        return mult;
+            mult[i] = alpha * this.val(i);
+        return new VettoreDenso(mult);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class VettoreDenso implements Vettore {
         if (!(this.conforme(v))) throw new IllegalArgumentException("Impossibile eseguire la somma su un vettore di dimensione differtente");
         final int[] sum = new int[this.dim()];
         for (int i = 0; i < vect.length; i++)
-            sum[i] = v.val[i] + this.val[i];
-        return sum;
+            sum[i] = v.val(i) + this.val(i);
+        return new VettoreDenso(sum);
     }
 
     @Override

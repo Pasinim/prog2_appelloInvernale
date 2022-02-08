@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 
 public class VettoreNullo implements Vettore {
     
@@ -9,6 +10,24 @@ public class VettoreNullo implements Vettore {
     }
     @Override
     public String toString() {
-        return "VettoreNullo [vect=" + Arrays.toString(vect) + "]";
+        return Arrays.toString(vect);
+    }
+    @Override
+    public int dim() {
+        return vect.length;
+    }
+    @Override
+    public int val(int i) {
+        if (i > this.dim()) throw new IllegalArgumentException("idx > dim. Trovato: " + i );
+        return 0;
+    }
+    @Override
+    public Vettore per(int alpha) {
+        return this;
+    }
+    @Override
+    public Vettore piu(Vettore v) {
+        Objects.requireNonNull(v);
+        return v;
     }
 }

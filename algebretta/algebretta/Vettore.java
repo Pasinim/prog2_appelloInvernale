@@ -4,7 +4,7 @@
  */
 public interface Vettore {
     /**
-     * @return imensione del vettore
+     * @return dimensione del vettore
      */
     int dim();
 
@@ -16,14 +16,14 @@ public interface Vettore {
     
     /**
      * @param alpha scalare per cui moltiplicare this
-     * @return restituisce il prodotto scalare
+     * @return Vettore ottenuto dal prodotto scalare
      * del vettore corrente per lo scalare alpha.
      */
     Vettore per(final int alpha);
 
     /**
      * @param v vettore a cui sommare this
-     * @return somma tra v e this
+     * @return Vettore ottenuto dalla somma tra v e this
      */
     Vettore piu(final Vettore v);
 
