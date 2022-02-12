@@ -43,6 +43,7 @@ dei suoi bit:
 
     posizione 9876543210
      BoolVect FFFFVFFVVV
+//boolean a[] = new boolean[] {false, false, false, false, true, false, false, true, true, true}
 
 la dimensione di tale BoolVect è 6, dato che il valore vero di posizione
 maggiore (l'unico `V` circondato da due `F`) è in posizione 5.

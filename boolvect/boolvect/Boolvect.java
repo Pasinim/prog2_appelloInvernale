@@ -16,7 +16,7 @@ public interface Boolvect {
      * @param idx indice dell'elemento
      * @return restituisce il valore del Boolvect in posizione i
      */
-    boolean leggi(final int idx);
+    boolean leggi(final int idx) throws IndexOutOfBoundsException;
 
     /**
      * Imposta a v l'elemento i nel Boolvect 
@@ -31,25 +31,45 @@ public interface Boolvect {
     int dimensione();
 
     /**
+     * this = o OP this. Vengono scritti i valori in this pari al risultato dell'operazione
      * @param o Boolvect con cui eseguire l'or logico
-     * @return Boolvect ottenuto dall'or logico tra this e o
      */
-    Boolvect or(final Boolvect o);
+    void or(final Boolvect o);
 
     /**
-     * @param o Boolvect con cui eseguire lo xor logico
-     * @return Boolvect ottenuto dallo xor logico tra this e o
+     * this = o OP this. Vengono scritti i valori in this pari al risultato dell'operazione
+     * @param o Boolvect con cui eseguire lo xor logi
      */
-    Boolvect xor(final Boolvect o);
+    void xor(final Boolvect o);
 
     /**
+     * this = o OP this. Vengono scritti i valori in this pari al risultato dell'operazione
      * @param o Boolvect con cui eseguire l'and logico
-     * @return Boolvect ottenuto dall'and logico tra this e o
      */
-    Boolvect and(final Boolvect o);
+    void and(final Boolvect o);
 
     default boolean compatibile(final Boolvect o){
         return taglia() == o.taglia();
+    }
+
+    /**
+     * Rende tutti i valori del boolvect uguali a false.
+     */
+    default void pulisci(){
+        for (int i = 0; i < taglia(); i++)
+            set(false, i);
+    };
+
+    /**
+     * Rende il BoolVect uguale ai valori di verità specificati nella stringa data.
+     * @param vals Stringa dei valori di verità
+     */
+    default void daString(final String vals){
+        if (vals.length() > taglia()) throw new IllegalArgumentException("La lunghezza della stringa è maggiore della lunghezza del boolvect");
+        pulisci();
+        for (int i = 0; i < vals.length(); i++)
+            if (vals.charAt(vals.length() - i - 1) == 'V')
+                set(true, vals.length() - i - 1);
     }
 
     
