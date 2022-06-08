@@ -63,12 +63,14 @@ https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Objects.h
 Se `equals` viene sovrascritto come congiunzione dell'uguaglianza di (un
 sottoinsieme degli) attributi dell'oggetto (diciamo `attr_1`, `attr_2`,
 `attr_N`), allora `hashCode` può essere sovrascritto come
-```{code-block} java
+
+```{code-block}
 @Override
 public int hashCode() {
   return Objects.hash(attr_1, attr_2, attr_N);
 }
 ```
+
 piuttosto che implementando direttamente la ricetta proposta nell'Item 11 del
 Capitolo 3 del libro di testo "Effective Java".
 
@@ -78,32 +80,43 @@ Il metodo
 [`requireNonNull`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Objects.html#requireNonNull(T,java.lang.String))
 consente di verificare se una espressione è `null` e, nel caso, sollevare una
 `NullPointerException` col messaggio indicato; ad esempio
-```{code-block} java
+
+```{code-block}
 Objects.requireNonNull(espressione, "Messaggio");
 ```
+
 può essere usato invece di:
-```{code-block} java
+
+```{code-block}
 if (espressione == null)
   throw new NullPointerException("Messaggio");
 ```
+
 Dal momento che qualora l'espressione non sia `null` il metodo ne restituisce il
 valore, esso può essere convenientemente usato in un assegnamento o invocazione
 di metodo; ad esempio
-```{code-block} java
+
+```{code-block}
 variabile = Objects.requireNonNull(espressione, "Messaggio");
 ```
+
 può essere usato invece di:
-```{code-block} java
+
+```{code-block}
 if (espressione == null)
   throw new NullPointerException("Messaggio");
 variabile = espressione;
 ```
+
 e similmente
-```{code-block} java
+
+```{code-block}
 Objects.requireNonNull(espressione, "Messaggio").metodo();
 ```
+
 può essere usato invece di:
-```{code-block} java
+
+```{code-block}
 if (espressione == null)
   throw new NullPointerException("Messaggio");
 espressione.metodo();
@@ -115,13 +128,16 @@ Possono risultare comodi anche i metodi statici
 e
 [`hashCode`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Objects.html#hashCode(java.lang.Object))
 che possono essere usati anche su riferimenti `null`; ad esempio
-```{code-block} java
+
+```{code-block}
 String stringa = Objects.toString(oggetto);
 boolean uguali = Objects.euqla(questo, quello);
 int hash = Objects.hashCode(oggetto);
 ```
+
 possono essere rispettivamente usati invece di
-```{code-block} java
+
+```{code-block}
 String stringa = oggetto == null ? "null" : oggetto.toString();
 boolean uguali = questo == null ? quello == null : questo.equals(quello);
 int hash = oggetto == null ? 0 : oggetto.hashCode();
@@ -189,12 +205,15 @@ Può essere però utile richiamare alcuni metodi (di default e statici) di
 Osservate che i metodi relativi all'ordine naturale non hanno argomento, devono
 pertanto inferire il tipo del comparatore da restituire o dal contesto, come ad
 esempio in
+
 ```{code-cell}
 Comparator<Integer> DA_GRANDE_A_PICCOLO = Comparator.reverseOrder();
 DA_GRANDE_A_PICCOLO.compare(1, 2)
 ```
+
 dove il tipo è dedotto da quello deella variabile a cui assegnare il risultato,
 oppure da uno *hint*, come in
+
 ```{code-cell}
 Comparator.<Integer>reverseOrder().compare(2, 1)
 ```
@@ -204,6 +223,7 @@ Comparator.<Integer>reverseOrder().compare(2, 1)
 Si consideri una classe che rappresenti un orario della mattina (a prescindere
 dall'opportunità di sviluppare un tipo del genere, accennato qui a solo a titolo
 esemplificativo). Una implementazione minimale di tale tipo è data da
+
 ```{code-cell}
 class OrarioMattina implements Comparable<OrarioMattina> {
   private static final String[] NUMERO_A_PAROLE = {"mezzanote", "una", "due", "tre", "quattro", "cinque", "sei", "sette", "otto", "nove", "dieci", "undici", "dodici"};
@@ -239,6 +259,7 @@ class OrarioMattina implements Comparable<OrarioMattina> {
   }
 }
 ```
+
 Il `toString` della classe indca le ore in parole, seguite dai minuti (se non
 pari a 0). Gli oggetti della classe sono *comparabili* secondo l'ordine naturale
 dello scorrere del tempo; si osservi che (come da specifiche dell'interfaccia)
@@ -246,21 +267,26 @@ l'implementazione di `compareTo` porta con se la necessità di implementare
 `equals` e `hashCode` in modo coerente.
 
 Dati due orari di questo tipo
+
 ```{code-cell}
 OrarioMattina
   colazione = new OrarioMattina(8 * 60 + 30),
   merenda = new OrarioMattina(10 * 60);
 ```
+
 è possibile confrontarli secondo l'ordine naturale come segue
+
 ```{code-cell}
 colazione.compareTo(merenda) < 0
 ```
+
 con l'atteso risultato che la colazione si fa prima della merenda.
 
 Se ora volessimo confrontarli in base all'ordine lessicografico delle loro
 rappresentazioni testuali potremmo definire (qui facendo uso di una [*classe
 anonima*](https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html))
 il *comparatore*
+
 ```{code-cell}
 final Comparator<OrarioMattina> LESSICOGRAFICO_ORE = new Comparator<>() {
     @Override
@@ -269,10 +295,13 @@ final Comparator<OrarioMattina> LESSICOGRAFICO_ORE = new Comparator<>() {
     }
   };
 ```
+
 secondo quest'ultimo, l'ordine tra i due orari scelti in precedenza si ribalta
+
 ```{code-cell}
 LESSICOGRAFICO_ORE.compare(colazione, merenda) > 0
 ```
+
 in quanto "sette" viene lessicograficamente dopo "dieci" (dato che la "s" è dopo
 la "d" nell'ordine alfabetico).
 
@@ -297,6 +326,7 @@ ereditata dagli array non è particolarmente leggibile; è però possibile usare
 metodo
 [`toString`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#toString(java.lang.Object%5B%5D))
 di questa classe per ottenere una rappresentazione molto semplice; ad esempio
+
 ```{code-cell}
 int[] arr = new int[] {1, 2, 3, 4};
 Arrays.toString(arr) + " è più leggibile di " + arr
@@ -305,6 +335,7 @@ Arrays.toString(arr) + " è più leggibile di " + arr
 #### Riempire o copiare
 
 Usando il metodo [`fill`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#fill(java.lang.Object%5B%5D,int,int,java.lang.Object)) è possibile riempire (un segmento) di un array con un valore di *default*; ad esempio
+
 ```{code-cell}
 String[] slot = new String[6];
 Arrays.fill(slot, 0, 3, "primi tre");
@@ -333,6 +364,7 @@ delle versioni sovraccaricate senza i limiti del segmento (che vengono assunti
 coincidere con l'inizio e la fine dell'array). Con il metodo
 [`copyOfRange`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#copyOfRange(T%5B%5D,int,int))
 è invece possibile ottenere una copia di (un segmento) di un array; ad esempio
+
 ```{code-cell}
 String[] subslot = Arrays.copyOfRange(slot, 2, 5);
 Arrays.toString(subslot)
@@ -345,6 +377,7 @@ siano l'uno il sottotipo dell'altro. Come è ben noto, anche se `S` è sottotipo
 di `T` ed è certo che gli elementi di un array `t` di tipo `T[]` siano tutti di
 tipo concreto `S`, non è possibile effettuare il cast di tale array come
 `(S[])t`; per fare un esempio
+
 ```{code-cell}
 Number[] numeri = new Number[] {1, 2, 3};
 try {
@@ -353,12 +386,14 @@ try {
   System.err.println(e);
 }
 ```
+
 solleva una eccezione: evidentemente, il cast non può avvenire solo sul
 riferimento, perché la cosa avesse senso, dovrebbe venir applicato anche
 elemento per elemento (ad esempio con un ciclo); ma si può anche usare `copyOf`
 nella versione che accetta una istanza di
 [`Class`](https://docs.oracle.com/javase/7/docs/api/java/lang/Class.html) per
 determinare il tipo degli elementi
+
 ```{code-cell}
 Integer[] interi = Arrays.copyOf(numeri, numeri.length, Integer[].class);
 Arrays.toString(interi)
@@ -373,15 +408,19 @@ usare il metodo statico
 della classe `System`. Questo metodo invece di restituire la copia in nuovo
 array, copia i riferimenti da un array sorgente ad uno destinazione (che deve
 essere già allocato e della dimensione opportuna); ad esempio
+
 ```{code-cell}
 int[] positivi = new int[] {1, 2, 3, 4, 5, 6, 7};
 int[] negativi = new int[] {-1, -2, -3, -4, -5, -6, -7};
 System.arraycopy(positivi, 2, negativi, 1, 3);
 ```
+
 ha l'effetto di copiare 3 elementi dalla posizione 2 di `positivi` alla posizione 1 di `negativi`
+
 ```{code-cell}
 Arrays.toString(negativi)
 ```
+
 ##### Adattare la dimensione di un array
 
 Vogliamo raccogliere in un array di `long` di nome `pows` gli elementi
@@ -389,6 +428,7 @@ dell'insieme $\{n < 10^{12} | n = 2^{2k}, k \geq 0 \}$; supponendo di non
 conoscere a priori la cardinalità dell'insieme, possiamo riempire iterativamente
 l'array, inizialmente di dimensione 1, raddoppiandone la dimensione ogni volta
 che il numero `i` di potenze individuate ne uguaglia la lunghezza
+
 ```{code-cell}
 long[] pows = new long[1];
 long n = 0;
@@ -400,6 +440,7 @@ while ((n = (long)Math.pow(2, 2 * k++)) < 1_000_000_000_000L) {
 pows = Arrays.copyOf(pows, i);
 Arrays.toString(pows)
 ```
+
 Osservate come, oltre al modo comodo di scrivere la costante $10^{12}$ come
 `1_000_000_000_000L` interponendo per leggibilità il separatore `_`, al termine
 del riempimento, si possono eliminare le posizioni rimaste vuote dell'array
@@ -428,29 +469,37 @@ che accetta un
 come argomento.
 
 (oec-array)=
+
 #### Ordinare e cercare
 
 Dato un vettore, è possibile ordinarlo [*in loco*](https://www.wikiwand.com/it/Algoritmo_in_loco) secondo l'*ordine naturale* dei suoi elementi tramite il metodo [`sort`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#sort(java.lang.Object[])), oppure specificando esplicitamente un *comparatore*  con la versoine sovraccaricata [`sort`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#sort(T[],java.util.Comparator)).
 
 Riutilizzando la classe `OrarioMattina` della sezione precedente, ad esempio
+
 ```{code-cell}
 OrarioMattina[] orari = new OrarioMattina[] {colazione, merenda, new OrarioMattina(5 * 60 + 10)};
 Arrays.sort(orari);
 Arrays.toString(orari)
 ```
+
 permette di ordinare gli orari secondo l'ordine naturale, mentre
+
 ```{code-cell}
 Arrays.sort(orari, LESSICOGRAFICO_ORE);
 Arrays.toString(orari)
 ```
+
 li ordina secondo l'ordine lessicografico dell'ora (in parole). La versione in
 cui è possibile specificare il comparatore può essere utile per invertire
 l'orine; ad esempio
+
 ```{code-cell}
 Arrays.sort(orari, LESSICOGRAFICO_ORE.reversed());
 Arrays.toString(orari)
 ```
+
 oppure, basandosi sull'ordine naturale,
+
 ```{code-cell}
 Arrays.sort(orari, Comparator.reverseOrder());
 Arrays.toString(orari)
@@ -464,21 +513,25 @@ che si basa sull'ordine naturale, o la versione sovraccaricata di
 [`binarySearch`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html#binarySearch(T[],T,java.util.Comparator))
 che consente di specificare un comparatore (che, evidentemente, deve essere il
 medesimo che era stat usato per ordinare l'array prima della ricerca).
+
 ##### Un esempio di ricerca e inserimento
 
 Come esempio della ricerca, consideriamo l'array `cifreOrdinate` che contenga le
 parole corrispondenti alle cifre decimali ordinato lessicograficamente, ottenuto
 come
+
 ```{code-cell}
 String[] cifreInParole = new String[] {"zero", "un", "due", "quattro", "cinque", "sei", "sette", "otto", "nove" };
 String[] cifreInParoleOrdinate = cifreInParole.clone();
 Arrays.sort(cifreInParoleOrdinate);
 Arrays.toString(cifreInParoleOrdinate)
 ```
+
 Usiamo la ricerca per ottenere l'inversa della funzione che mappa `i` in
 `cifreInParoleOrdinate[i]`, ossia la funzione `cifraAPosizione` che mappa la
 parola `cifra` corrispondente a una cifra in parole nell'indice `i` tale che
 `cifreInParoleOrdinate[i].equals(cifra)` sia vero
+
 ```{code-cell}
 static final int cifraAPosizione(final String cifra) {
   int valore = Arrays.binarySearch(cifreInParoleOrdinate, cifra);
@@ -486,32 +539,40 @@ static final int cifraAPosizione(final String cifra) {
   return valore;
 }
 ```
+
 che si comporta come atteso
+
 ```{code-cell}
 cifraAPosizione("zero")
 ```
+
 dato che "z" è certamente l'ultima lettera dell'alfabeto.
 
 Come è facile accorgersi, ci siamo scordati del tre, cercandolo infatti
 otteniamo un valore negativo dell'indice!
+
 ```{code-cell}
 int idx = Arrays.binarySearch(cifreInParoleOrdinate, "tre");
 idx
 ```
+
 Secondo il contratto del metodo di ricerca, un risultato negativo non solo
 indica che l'elemento non è stato trovato, ma suggerisce la posizione `pos` dove
 dovrebbe venir inserito nell'array secondo la formula `idx = -pos - 1` (che
 ovviamente rende `idx` sempre negativo); usando questa informazione è possibile
 sistemare la mancanza
+
 ```{code-cell}
 int pos = -idx - 1;
 pos
 ```
+
 A questo punto è sufficiente allocare un nuovo array `corretto` con una
 posizione in più, copiare dall'array `cifreInParoleOrdinate` le posizioni fino a
 `pos` esclusa, aggiungere in tale posizione di `corretto` la stringa `"tre"` e
 quindi copiare le rimanenti `cifreInParoleOrdinate.length - pos` posizioni da
 `cifreInParoleOrdinate` in `corretto` a partire da `pos + 1`
+
 ```{code-cell}
 String[] corretto = new String[cifreInParoleOrdinate.length + 1];
 System.arraycopy(cifreInParoleOrdinate, 0, corretto, 0, pos);
@@ -618,6 +679,7 @@ delle implementazioni scelte.
 Iniziamo con alcune considerazioni di carattere generale, che pongono in
 relazione le collezioni con una delle nozioni centrali dell'insegnamento:
 l'*immutabilità*.
+
 #### Collezioni non modificabili
 
 Una collezione è *immutabile* se:
@@ -664,13 +726,16 @@ cambiamenti delle collezioni d'appoggio si riflettono però sempre nella viste!
 Un caso tipico di vista sono le *sottocollezioni*, come ad esempio le
 *sottoliste* che possono essere ottenute tramite il metodo
 [`subList`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html#subList(int,int))
+
 ```{code-cell}
 List<Integer> lista = new ArrayList<>(List.of(1, 2, 3, 5, 6));
 List<Integer> sottolista = lista.subList(2, 4);
 lista + "; " + sottolista
 ```
+
 occorre prestare sempre attenzione a come le alterazioni *anche strutturali*
 della sottocollezione alterano la collezione; ad esempio
+
 ```{code-cell}
 sottolista.add(1, 4);
 lista + "; " + sottolista
@@ -687,15 +752,18 @@ Ci sono diversi modi di ottenere una collezione non modificabile:
 
 Ogni interfaccia contiene una serie di metodi statici `of` (di arietà crescente,
 fino a quello variadico) per fabbricare una collezione del suo tipo; ad esempio
+
 ```{code-cell}
 List<String> lista = List.of("uno", "due", "due");
 Set<String> insieme = Set.of("uno", "due", "tre");
 Map<String, Integer> mappa = Map.of("uno", 1, "due", 2, "tre", 3);
 lista + "; " + insieme + "; " + mappa
 ```
+
 nel caso delle mappe c'è anche il metodo statico
 [`ofEntries`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html#ofEntries(java.util.Map.Entry...))
 che può essere comodamente usato importando staticamente `java.util.Map.entry`
+
 ```{code-cell}
 import static java.util.Map.entry;
 
@@ -712,6 +780,7 @@ fabbricare una collezione copiando i riferimenti agli elementi dalla collezione
 passata come argomento (similmente al caso degli omonimi metodi della classe
 `Arrays` — anche in questo caso, non vengono copiati gli elementi, ma solo i
 loro riferimenti); ad esempio
+
 ```{code-cell}
 List<String> lista = List.of("uno", "due", "due");
 Set<String> insieme = Set.of("uno", "due", "tre");
@@ -734,6 +803,7 @@ Per finire, la classe di metodi statici di utilità
 non modificabili delle varie collezioni, essi hanno nome `unmodifiableT` dove
 `T` è uno delle possibili interfacce per le collezioni; ad esempio
 [`unmodifiableSet`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collections.html#unmodifiableSet(java.util.Set)) consente di ottenere un insieme non modificabile
+
 ```{code-cell}
 Set<String> mutabile = new HashSet<>();
 mutabile.addAll(List.of("primo", "secondo", "terzo"));
@@ -744,10 +814,12 @@ try {
   System.err.println("Modifica non consentita!");
 }
 ```
+
 mostra come l'invocazione di un metodo mutazionale sulla vista sollevi in
 effetti l'eccezione attesa; attenzione però: come già detto parlando delle
 viste, se la collezione sottostante cambia, la modifica si riflette
 necessariamente anche nella vista
+
 ```{code-cell}
 mutabile.add("ultimo");
 immutabile
@@ -762,6 +834,7 @@ della classe conentendone la modifica dall'esterno (alcuni iteratori
 implementano infatti il metodo `remove` che consentirebbe di elimianre gli
 elementi della collezione durante l'iterazione); ciò è facilmente evitabile
 restituendo invece l'iteratore della vista non modifdicabile. Ad esempio
+
 ```{code-block}
 class AClass implements Iterable<AType> {
   private final Collection<AType> aModifiableCollection;
@@ -774,6 +847,7 @@ class AClass implements Iterable<AType> {
   }
 }
 ```
+
 :::
 
 ### Copie modificabili
@@ -793,6 +867,7 @@ Ogni collezione ha un costruttore copia che prende una
 per argomento e costruisce una nuova collezione che contiene un nuovo
 riferimento per ciascun elemento (ma non dell'elemento) della collezione da cui
 è copiata; ad esempio
+
 ```{code-cell}
 List<String> lista = new ArrayList<>();
 lista.addAll(List.of("uno", "due", "tre"));
@@ -801,9 +876,11 @@ lista.add("quattro");
 copia.remove("tre");
 lista + "; " + copia
 ```
+
 una diversa strategia è quella di usare il metodo `addAll`, come la precedente
 può essere usata anche nel caso in cui la destinazione sia di tipo diverso dalla
 sorgente della copia; ad esempio
+
 ```{code-cell}
 SortedSet<String> vuoto = new TreeSet<>();
 vuoto.addAll(lista);
@@ -829,13 +906,16 @@ In un verso, la classe `Arrays` ha il metodo variadico
 che può essere usato per costruire una lista a partire da un array di
 riferimenti (ossia non di tipi primitivi); tale lista si comporta come una vista
 non modificabile. Ad esempio
+
 ```{code-cell}
 String[] mksUnits = new String[] {"metro", "kilo", "secondo"};
 List<String> comeLista = Arrays.asList(mksUnits);
 comeLista
 ```
+
 Attenzione che, come accade nelle viste, se cambia l'array allora cambia la
 lista
+
 ```{code-cell}
 mksUnits[1] = "kilogrammi";
 comeLista.get(1)
@@ -854,6 +934,7 @@ elementi (basata sul loro metodo `equals`).
 Rivisitando l'esempio delle cifre, l'inversa della funzione che mappa `i` in
 `cifreInParole[i]`, ossia la funzione `cifraAValore` che mappa la parola `cifra`
 corrispondente a una cifra in parole nel suo valore `i` è data da
+
 ```{code-cell}
 static final int cifraAValore(final String cifra) {
   int valore = Arrays.asList(cifreInParole).indexOf(cifra);
@@ -861,8 +942,10 @@ static final int cifraAValore(final String cifra) {
   return valore;
 }
 ```
+
 che (certamente ad un costo lineare) è però in grado di convertire parole in
 valori
+
 ```{code-cell}
 cifraAValore("due")
 ```
@@ -871,25 +954,32 @@ Occorre prestare però molta attenzione al metodo `asList` nel caso di argomenti
 che siano di tipo primitivo, sopratutto array con elementi di tipo primitivo! È
 evidente che, non potendo istanziare tipi generici con tipi primitivi,
 l'invocazione di
+
 ```{code-cell}
 List<Integer> listaDiInteger = Arrays.asList(1, 2, 3);
 listaDiInteger
 ```
+
 non può che restituire una lista di `Integer`. Osservando che un metodo
 variadico può essere equivalentemente invocato oltre che con un elenco di
 argomenti con un array di tali elementi, è anche del tutto atteso che
+
 ```{code-cell}
 Integer[] arrayDiInteger = new Integer[] {4, 5, 6};
 Arrays.asList(arrayDiInteger)
 ```
+
 produca lo stesso risultato del codice precedente. Il risultato del seguente
 codice
+
 ```{code-cell}
 int[] arrayDiInt = new int[] {4, 5, 6};
 Arrays.asList(arrayDiInt)
 ```
+
 non può però che destare un certo stupore, soprattutto se ci si attendeva che si
 comportasse come i casi precedenti. Quel che accade, è che
+
 * nel primo caso,
   l'[*autoboxing*](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html)
   fa si che l'invocazione su un elenco di parametri `int` venga di fatto
@@ -904,6 +994,7 @@ comportasse come i casi precedenti. Quel che accade, è che
   solo elemento… dato da `arrayDiInt`!
 
 Si può facilmente verificare che tale è il caso con
+
 ```{code-cell}
 List<int[]> listaDiArrayDiInt = Arrays.asList(arrayDiInt);
 int[] unicoArray = listaDiArrayDiInt.get(0);
@@ -920,17 +1011,20 @@ segnatura del metodo prevede che venga passato come argomento un array (anche
 vuoto) del tipo dell'array che si intende ottenere (questo è dovuto ad alcune
 particolarità del modo in cui interagiscono array e metodi generici). L'uso di
 tale metodo è elementare
+
 ```{code-cell}
 List<Integer> interi = List.of(1, 2, 3);
 Integer[] comeArray = interi.toArray(new Integer[0]);
 Arrays.toString(comeArray)
 ```
+
 Attenzione perché omettendo l'argomento sarà selezionato il metodo
 sovraccaricato
 [`toArray`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html#toArray())
 che restituisce un `Object[]` e non è possibile effettuare alcun cast diretto
 che lo renda un array di elementi di tipo diverso, come mostra l'esempio
 seguente
+
 ```{code-cell}
 try {
   Integer[] comeArray = (Integer[])interi.toArray();
@@ -938,6 +1032,7 @@ try {
   System.err.println(e);
 }
 ```
+
 Certamente si può effettuare una sorta di cast col metodo `copyOf` come
 suggerito in precedenza, ma ovviamente è più efficiente ottenere direttamente
 l'array del tipo desiderato.
@@ -948,13 +1043,16 @@ Le mappe (che non sono sottotipi di `Collection`) non hanno un metodo che
 consenta di ottenerne direttamente il contenuto sotto forma di array; ogni mappa
 però può restituire l'insieme delle sue `Map.Entry` (ossia delle coppie chiave e
 valore), da cui può essere quindi un array; ad esempio
+
 ```{code-cell}
 Map.Entry[] entries = mappa.entrySet().toArray(new Map.Entry[0])
 ```
+
 tale array però non ha traccia dei parametri con cui era istanziata la mappa
 generica (e non si può istanziare un array di tipo parametrico); per questa
 ragione accedere a chiavi e valori richiede dei cast espliciti (invece di godere
 delle usuali garanzie offerte dai generici)
+
 ```{code-cell}
 String chiave = (String)(entries[0].getKey());
 Integer valore = (Integer)(entries[0].getValue());
@@ -981,14 +1079,18 @@ Non sottovalutate la semplificazione consentita dall'accorgimento di usare
 collezioni vuote (se logicamente ammissibili per le specifiche) al posto di
 `null`. Se il metodo `aCollection` di una classe adottasse tale convenzione, ai
 suoi utilizzatori sarebbe consentito di scrivere, ad esempio
+
 ```{code-block}
 for (AType e : aCollection()) doSomething(e);
 ```
+
 invece del più verboso
+
 ```{code-block}
 Collection<AType> c = aCollection();
 if (c != null) for (AType e : c) doSomething(e);
 ```
+
 o di commettere un errore grave nel caso si omettesse, non avendo adottato la
 convenzione, il controllo di nullità
 :::
@@ -1000,6 +1102,7 @@ e
 consentono, rispettivamente, di riempire una lista con un dato elemento, o
 rimpiazzare tutte le occorrenze di un elemento con un altro; il secondo potrebbe
 essere usato, ad esempio, per rimpiazzare i valori `null` con un "default"
+
 ```{code-cell}
 List<String> paroleENull = Arrays.asList("uno", null, "due", null, null, "tre");
 List<String> parole = new ArrayList<>(paroleENull);
@@ -1019,22 +1122,29 @@ questo caso in loco, è necessario che la lista sia modificabile.
 
 Qualche esempio concreto può aiutare a comprenderne l'uso: ordine naturale
 (specificando `null`)
+
 ```{code-cell}
 lista.sort(null);
 lista
 ```
+
 stessa cosa con il metodo statico di `Comparator`
+
 ```{code-cell}
 lista.sort(Comparator.naturalOrder());
 lista
 ```
+
 mentre per l'inverso dell'ordine naturale
+
 ```{code-cell}
 lista.sort(Comparator.reverseOrder());
 lista
 ```
+
 In alcuni casi (ad esempio se è noto che non si riutilizzerà più un certo
 ordine) può essere molto comodo usare una classe anonima
+
 ```{code-cell}
 lista.sort(new Comparator<>() {
   @Override
@@ -1046,6 +1156,7 @@ lista.sort(new Comparator<>() {
 });
 lista
 ```
+
 in questo caso, le stringhe sono ordinate in base all'ordine alfabetico del loro ultimo carattere (se non vuote).
 
 Come nel caso degli array, la ricerca di un elemento in una lista ordinata può
@@ -1066,6 +1177,7 @@ Per cercare una *sottolista*, è invece possibile usare il metodo statico
 (o
 [lastIndexOfSubList](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collections.html#lastIndexOfSubList(java.util.List,java.util.List)
 )) di `Collections`; ad esempio
+
 ```{code-cell}
 lista.sort(null);
 int idx = Collections.indexOfSubList(lista, List.of("tre", "uno"));
@@ -1085,10 +1197,12 @@ indicare un comparatore come secondo argomento.
 Per finire, se si vuole contare il numero di occorrenze di un certo valore, si
 può adoperare il metodo
 [`frequency`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collections.html#frequency(java.util.Collection,java.lang.Object)); ad esempio
+
 ```{code-cell}
 int num =  Collections.frequency(paroleENull, null);
 paroleENull + "; " + num
 ```
+
 riporta il numero di `null` nella collezione.
 
 #### Mescolare e ruotare
@@ -1131,6 +1245,7 @@ si otterrà sempre la stessa sequenza di esecuzione.
 
 Può essere quindi una buona idea istanziare il generatore tramite una funzione
 del genere
+
 ```{code-block}
 static void Random reproducibleRng(long seed) {
   if (seed == 0) {
@@ -1140,6 +1255,7 @@ static void Random reproducibleRng(long seed) {
   return new Random(seed);
 }
 ```
+
 in questo modo, se la funzione è invocata con un valore nullo del seme essa ne
 sceglierà uno (ogni volta diverso, grazie alla chiamata di
 [`currentTimeMillis`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/System.html#currentTimeMillis()))

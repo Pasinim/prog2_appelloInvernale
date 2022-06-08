@@ -205,18 +205,18 @@ Un esempio di output da emettere al termine dell'esecuzione è dato da:
     9 - "The Sicilian Clan" (03:27), (da "Naked City")
     10 - "The James Bond Theme" (03:02), (da "Naked City")
     Durata totale: 45:23
-
+    
     The wall
       "Another Brick in the Wall, Part 1" (03:11)
       "Another Brick in the Wall, Part 2" (03:59)
       "Hey You" (04:40)
       "Is There Anybody Out There?" (02:44)
       "Mother" (05:32)
-
+    
     In the Court of the Crimson King
       "21st Century Schizoid Man" (07:24)
       "The Court of the Crimson King" (09:26)
-
+    
     Naked City
       "Batman" (01:58)
       "The Sicilian Clan" (03:27)
