@@ -92,6 +92,13 @@
    Integer.numberOfLeadingZeros(i)Iteger.numberOfLeadingZeros(
    ```
 
+4. Per contare la posizione da destra (esercizio bool=vect)
+   
+   ```java
+      for (int i = 0; i < len; i++) 
+         scrivi(i, vals.charAt(len - i - 1) == 'V');
+   ```
+
 ____
 
-1. Un'interfaccia può restituire un tipo interfaccia?
+1. 
