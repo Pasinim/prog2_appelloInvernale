@@ -105,6 +105,6 @@ ____
 
 {% note %}
 
-Osservate l’uso del metodo clone che ha l’obiettivo di costruire una copia dell’array passato come argomento; questo accorgimento serve ad evitare che chi ha invocato li costruttore possa mantenere un riferimento all’array che costituisce la rappresentazione del vettore.
+**Note:** Osservate l’uso del metodo clone che ha l’obiettivo di costruire una copia dell’array passato come argomento; questo accorgimento serve ad evitare che chi ha invocato li costruttore possa mantenere un riferimento all’array che costituisce la rappresentazione del vettore.
 
 {% endnote %}
