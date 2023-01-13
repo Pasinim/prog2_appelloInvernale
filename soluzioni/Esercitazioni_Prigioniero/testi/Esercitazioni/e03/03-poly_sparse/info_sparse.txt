@@ -1,0 +1,3 @@
+Come trovo la dimensione del nuovo poly quando faccio una add?
+Devo contare quanti esponenti diversi ci sono in this e in q.
+Infatti con gli esponenti uguali si dovrà effettuare la somma.
