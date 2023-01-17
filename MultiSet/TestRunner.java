@@ -16,7 +16,8 @@ public class TestRunner {
     public static void main(String[] args) {
         List<MapStringMS> els = new ArrayList<MapStringMS>(); 
         System.out.println("CTRL + Z per uscire...");
-        try (Scanner in = new Scanner(new FileInputStream("./input.txt"))) {
+        //try (Scanner in = new Scanner(System.in)){ //lettura da tastiera
+       try (Scanner in = new Scanner(new FileInputStream("./input.txt"))) {
             while (in.hasNextLine()) {
                 MapStringMS ms = new MapStringMS();
                 String line = in.nextLine();
