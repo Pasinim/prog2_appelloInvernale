@@ -1,7 +1,7 @@
 # Metodi
 
-1. `hashCode`:
-
+1. `hashCode`: 
+   
    ```java
    return Objects.hash(nome, quantita);
    ```
@@ -12,12 +12,12 @@
            if (!(o instanceof Dotazione)) return false;
            final Dotazione obj = (Dotazione) o;
            return obj.nome.equals(this.nome) && obj.quantita == this.quantita;
-
+   
        }
    ```
 
 3. Quando creo una classe con all'interno una variabile di istanza (di tipo primitivo) con `final` non espongo la rappresentazione. Infatti con una implementazione di questo tipo
-
+   
    ```java
     public class Dotazione implements Comparable<Dotazione> {
        public final String nome;
@@ -25,44 +25,46 @@
    }
    ```
 
-potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
+       potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
        `d.quantita++` modificando l'istanza. Non è una classe immutabile.
 
 4. Controllare se negli elementi di una collezione è presente un riferimento nullo: `Arrays.asList(myArray).contains(null)`
 
-5. One line statement:
+5. One line statement:  `return elem2mult.containsKey(o) ? elem2mult.get(o) : 0;`
 
-6. Meglio non passare Collezioni nel costruttore, ma creare la collezione vuota e aggiungere gli elementi uno alla volta
+6. for corto: `for (E e : this) size += multeplicity`
 
-7. Quando nel costruttore (o in altri metodi) viene passata una lista è necessario prima copiarla per non esporre la rappresentazione (dato che la lista viene passata per riferimento). In questo modo anche se l'utente invoca il metodo `add` sulla lista che ha passato al metodo, quella che ha generato il costruttore resterà invariata dato che ho creato una copia.
+7. Meglio non passare Collezioni nel costruttore, ma creare la collezione vuota e aggiungere gli elementi uno alla volta
 
-8. Il costruttore quando istanzia un oggetto con un altro costruttore della classe deve avere nella prima riga línvocazione a quel costruttore
+8. Quando nel costruttore (o in altri metodi) viene passata una lista è necessario prima copiarla per non esporre la rappresentazione (dato che la lista viene passata per riferimento). In questo modo anche se l'utente invoca il metodo `add` sulla lista che ha passato al metodo, quella che ha generato il costruttore resterà invariata dato che ho creato una copia. 
 
-9. Le classi interne (_inner class_) sono lo strumento linguistico offerto da Java
-   per modellare esattamente la circostanza in cui ci troviamo: quella di un
-   oggetto (il brano) che ha senso solo se legato all’istanza di un altro
-   (l’album).
+9. Il costruttore quando istanzia un oggetto con un altro costruttore della classe deve avere nella prima riga línvocazione a quel costruttore
+
+10. Le classi interne (*inner class*) sono lo strumento linguistico offerto da Java
+    per modellare esattamente la circostanza in cui ci troviamo: quella di un
+    oggetto (il brano) che ha senso solo se legato all’istanza di un altro
+    (l’album).
 
 ### Metodi utili (pt2)
 
 1. Cerca il titolo del brano passato come parametro
-
+   
    ```java
    for (final Brano b : brani) if (b.titolo.equals(titolo)) return b;
    ```
 
 2. Iteratore:
    Il codice dell'iteratore deve essere scritto all'interno della classe (che nell'intestazione deve avere `implements Iterable<T>`), come se fosse un normale metodo.
-
+   
    ```java
    public Iterator<Album.Brano> brani(final Album album) {
            Objects.requireNonNull(album);
            return new Iterator<Album.Brano>(){
-
+   
                private final Iterator<Album.Brano> it = iterator();
-
+   
                private Album.Brano next = null;
-
+   
                @Override
                public boolean hasNext(){
                    if (next != null) return true;
@@ -74,7 +76,7 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
                    next = null;
                    return false;
                }
-
+   
                @Override
                public Album.Brano next() {
                    if (!it.hasNext()) throw new NoSuchElementException();
@@ -87,42 +89,19 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
    ```
 
 3. Trovo il primo 1 partendo da sx
-
+   
    ```java
    Integer.numberOfLeadingZeros(i)Iteger.numberOfLeadingZeros(
    ```
 
-4. Per contare la posizione da destra (esercizio bool=vect)
-
+4. Per contare la posizione da destra (esercizio boolvect)
+   
    ```java
-      for (int i = 0; i < len; i++)
+      for (int i = 0; i < len; i++) 
          scrivi(i, vals.charAt(len - i - 1) == 'V');
    ```
 
-5. Lettura da `stdin`:
-   ```java
-   public static void main(String[] args) {
-        List<MapStringMS> els = new ArrayList<MapStringMS>();
-        System.out.println("CTRL + Z per uscire...");
-        //try (Scanner in = new Scanner(System.in)){ //lettura da tastiera
-       try (Scanner in = new Scanner(new FileInputStream("./input.txt"))) {
-            while (in.hasNextLine()) {
-                MapStringMS ms = new MapStringMS();
-                String line = in.nextLine();
-                // System.out.println(line);
-                String tkns[] = line.split(" ");
-                for ( int i = 0; i < tkns.length; i++ ){
-                   ms.add(tkns[i]);
-                }
-                els.add(ms);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-   }
-   ```
-
----
+____
 
 1. Metodo `clone`
 
