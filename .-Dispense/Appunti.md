@@ -1,5 +1,31 @@
 # Metodi
 
+___
+
+## Revisione esame Gennaio
+
+- Attribuire ad ogni classe le proprie competenze al giusto livello di astrazione. Ciò signfica specialmente che se definisco una classe con dei metodi che fanno inserire delle informazioni devo avere **sempre** dei metodi che mi fanno prelevare tali informazioni.
+
+- Nell'AF è anche utile specificare l'ordine in cui vengono stampati gli oggeti, chi è in posizione 0 e chi in posizione *n-1*
+
+- Attenzione a riferisi correttamente alle **strutture dati** dell'implementazione: *insieme != lista != pila != ....*
+
+- Sempre approccio **top-down**, questo permette di specificare i metodi delle classi più in alto nella gerarchia 
+
+- Attenzione a specificare **tutte le eccezioni** che vengono sollevate (nel senso specificare `NullPointerException se è Object è null`, `IllegalArgumentException se n < 0`, ecc...)
+
+- Non aggiungere metodi o informazioni ridondanti (ad esempio id in `Scaffalatura`)
+
+- Se implemento con un `Set` è necessario che la classe abbia un metodo `hashCode()` implementato correttamente. Ad esempio in `Scaffalatura` dovrei avere un `hashCode()` che prende id e nome, in modo da avere un HashCode univoco per ogni istanza.
+  
+  > Sarebbe stato meglio implementare le `Scaffalature` all'interno del magazzino con una struttura dati diversa dal `Set` proprio per questo motivo.
+
+- Gli attributi di `Robot` non hanno senso perchè passo il numero di pacchi da spostare nel costruttore, ciò significa che una volta instanziato non posso spostare più dei pacchi che ho definito in fase di creazione dell'istanza.
+
+___
+
+
+
 1. `hashCode`: 
    
    ```java
