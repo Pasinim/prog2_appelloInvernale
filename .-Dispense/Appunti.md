@@ -2,7 +2,7 @@
 
 ___
 
-## Revisione esame Gennaio
+## Revisione esame Gennaio - Robot/Scalo
 
 - Attribuire ad ogni classe le proprie competenze al giusto livello di astrazione. Ciò signfica specialmente che se definisco una classe con dei metodi che fanno inserire delle informazioni devo avere **sempre** dei metodi che mi fanno prelevare tali informazioni.
 
@@ -22,9 +22,28 @@ ___
 
 - Gli attributi di `Robot` non hanno senso perchè passo il numero di pacchi da spostare nel costruttore, ciò significa che una volta instanziato non posso spostare più dei pacchi che ho definito in fase di creazione dell'istanza.
 
+## Revisione esame Febbraio - Berzelius
+
+- Nella `overview` devo specificare se la classe è **immutabile** o **mutabile**. Nella OV non devo però indicare come è implementata la classe (es: non devo dire che la tavola periodica è implementata con una lista).
+
+- AF e RI li specifico all'interno della classe, non fuori nell'overview
+
+> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate $\rightarrow $ <mark>devo sempre chiedermi che cosa può andare storto</mark>. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
+> 
+> **AF e IR devo farle prima del codice e bene**, il codice lo faccio dopo seguendo AF e IR alla lettera
+
+- La tavola periodica deve essere immutabile, altrimenti poi diventa difficoltoso gestire tutte le altre classi; ad esempio se inserisco una molecola che non è nella tavola periodica, poi aggiungo l'elemento che doveva esserci in quella molecola come mi devo comportare?
+
+- Nella specifica devo scrivere **anche le eccezioni** sollevate dalle API di Java, un utente esterno deve potere essere in grado di visualizzare le specifiche della mia classe e di sapere tutte le eccezioni che vengono lanciate. Ad esempio se ho implementato una classe con una `Map` devo specificare comunque la `NullPointerException`, anche se non la sollevo io ma il metodo `put` della mappa
+
+- Il peso atomico è un attributo dell'elemento, in questo TDE era definito tramite il numero di riga in fase di lettura della tavola periodica, avrei dovuto specificare questo comportamento nella classe `TavolaPeriodica`.
+
+- Quando mi serve fare una ricerca l'implementazione migliore è una `Mappa`, specialmente nelle mappe è necessario prestare attenzione quali eccezioni lanciare dato che è un tipo che può contenere di tutto
+
+- Nella tavola periodica devo garantire che non esistano elementi duplicati, NON devo farlo con un `equals` in Elemento dato che non posso farlo. 
+  Esempio stupido: come fa una persona a sapere che il proprio codice fiscale è univoco? Non può farlo, ma lo deve fare il "contenitore" dei codici fiscali, ossia l'anagrafe, che nel caso di doppioni attuerà una soluzione adeguata.
+
 ___
-
-
 
 1. `hashCode`: 
    
