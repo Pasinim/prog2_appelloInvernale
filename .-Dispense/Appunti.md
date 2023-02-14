@@ -28,7 +28,7 @@ ___
 
 - AF e RI li specifico all'interno della classe, non fuori nell'overview
 
-> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate $\rightarrow $ <mark>devo sempre chiedermi che cosa può andare storto</mark>. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
+> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate $\rightarrow$ <mark>devo sempre chiedermi che cosa può andare storto</mark>. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
 > 
 > **AF e IR devo farle prima del codice e bene**, il codice lo faccio dopo seguendo AF e IR alla lettera
 
