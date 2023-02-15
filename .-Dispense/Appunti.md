@@ -1,4 +1,18 @@
-# Metodi
+## Indicazioni generali
+
+> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate \rightarrow devo sempre chiedermi che cosa può andare storto. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
+> 
+> **AF e IR devo farle prima del codice e bene**, il codice lo faccio dopo seguendo AF e IR alla lettera
+
+- AF e RI li specifico all'interno della classe, non fuori nell'overview
+
+- Nella `overview` devo specificare se la classe è **immutabile** o **mutabile**. Nella OV **non devo però indicare** come è implementata la classe (es: non devo dire che la tavola periodica è implementata con una lista).
+
+- Nella specifica devo scrivere **anche le eccezioni** sollevate dalle API di Java, un utente esterno deve potere essere in grado di visualizzare le specifiche della mia classe e di sapere tutte le eccezioni che vengono lanciate. Ad esempio se ho implementato una classe con una `Map` devo specificare comunque la `NullPointerException`, anche se non la sollevo io ma il metodo `put` della mappa
+
+- Quando mi serve fare una ricerca l'implementazione migliore è una `Mappa`, specialmente nelle mappe è necessario prestare attenzione quali eccezioni lanciare dato che è un tipo che può contenere di tutto
+
+- Attribuire ad ogni classe le proprie competenze al giusto livello di astrazione. Ciò signfica specialmente che se definisco una classe con dei metodi che fanno inserire delle informazioni devo avere **sempre** dei metodi che mi fanno prelevare tali informazioni.
 
 ___
 
@@ -10,7 +24,7 @@ ___
 
 - Attenzione a riferisi correttamente alle **strutture dati** dell'implementazione: *insieme != lista != pila != ....*
 
-- Sempre approccio **top-down**, questo permette di specificare i metodi delle classi più in alto nella gerarchia 
+- Sempre approccio **top-down**, questo permette di specificare i metodi delle classi più in alto nella gerarchia => MA POI MI DICE DI CONCENTRARMI SUI LIVELLI PIÙ BASSI IN BERZELIUS?
 
 - Attenzione a specificare **tutte le eccezioni** che vengono sollevate (nel senso specificare `NullPointerException se è Object è null`, `IllegalArgumentException se n < 0`, ecc...)
 
@@ -24,26 +38,26 @@ ___
 
 ## Revisione esame Febbraio - Berzelius
 
-- Nella `overview` devo specificare se la classe è **immutabile** o **mutabile**. Nella OV non devo però indicare come è implementata la classe (es: non devo dire che la tavola periodica è implementata con una lista).
+### TavolaPeriodica
 
-- AF e RI li specifico all'interno della classe, non fuori nell'overview
+- È una classe che deve essere immutabile, altrimenti poi diventa difficoltoso gestire tutte le altre classi; ad esempio se inserisco una molecola che non è nella tavola periodica, poi aggiungo l'elemento che doveva esserci in quella molecola come mi devo comportare?
 
-> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate $\rightarrow$ <mark>devo sempre chiedermi che cosa può andare storto</mark>. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
-> 
-> **AF e IR devo farle prima del codice e bene**, il codice lo faccio dopo seguendo AF e IR alla lettera
+- Quando inserisco gli `Elementi` nella tavola periodica è necessario controllare che non ci sia già un `Elemento` uguale, non ha senso che nella tavola periodica ci siano più elementi o elementi con un numero atomico diverso.
 
-- La tavola periodica deve essere immutabile, altrimenti poi diventa difficoltoso gestire tutte le altre classi; ad esempio se inserisco una molecola che non è nella tavola periodica, poi aggiungo l'elemento che doveva esserci in quella molecola come mi devo comportare?
+- Dato che devo cercare i simboli, l'implementazione più sensata avviene tramite una mappa `<Simbolo, Intero>`,
 
-- Nella specifica devo scrivere **anche le eccezioni** sollevate dalle API di Java, un utente esterno deve potere essere in grado di visualizzare le specifiche della mia classe e di sapere tutte le eccezioni che vengono lanciate. Ad esempio se ho implementato una classe con una `Map` devo specificare comunque la `NullPointerException`, anche se non la sollevo io ma il metodo `put` della mappa
-
-- Il peso atomico è un attributo dell'elemento, in questo TDE era definito tramite il numero di riga in fase di lettura della tavola periodica, avrei dovuto specificare questo comportamento nella classe `TavolaPeriodica`.
-
-- Quando mi serve fare una ricerca l'implementazione migliore è una `Mappa`, specialmente nelle mappe è necessario prestare attenzione quali eccezioni lanciare dato che è un tipo che può contenere di tutto
+- Le mappe sono molto ostiche, è necessario prestare molta attenzione ai controlli sui parametri in entrata, devo difendermi da eventuali errori (passo un elemento `null`, cosa fare se è già presente un elemento, ecc...)
 
 - Nella tavola periodica devo garantire che non esistano elementi duplicati, NON devo farlo con un `equals` in Elemento dato che non posso farlo. 
   Esempio stupido: come fa una persona a sapere che il proprio codice fiscale è univoco? Non può farlo, ma lo deve fare il "contenitore" dei codici fiscali, ossia l'anagrafe, che nel caso di doppioni attuerà una soluzione adeguata.
 
+### Elemento
+
+- Il peso atomico è un attributo dell'elemento, in questo TDE era definito tramite il numero di riga in fase di lettura della tavola periodica, avrei dovuto specificare questo comportamento nella classe `TavolaPeriodica`.
+
 ___
+
+## Metodi
 
 1. `hashCode`: 
    
