@@ -160,6 +160,14 @@ ___
          scrivi(i, vals.charAt(len - i - 1) == 'V');
    ```
 
+5. Lettura da Stidin:
+
+```java
+
+```
+
+
+
 ____
 
 1. Metodo `clone`
