@@ -1,6 +1,5 @@
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,7 +27,7 @@ public class Molo {
      */
     public Nave salpa(){
         if (navi.size() == 0) throw new UnsupportedOperationException("Molo vuoto, impossibile salpare");
-        Nave n = navi.removeLast();
+        Nave n = navi.removeFirst();
         return n;
     }
 

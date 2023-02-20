@@ -163,10 +163,23 @@ ___
 5. Lettura da Stidin:
 
 ```java
-
+        try (Scanner in = new Scanner(new FileInputStream("./Revisione/input-0.txt"))) {
+            int nMoli = in.nextInt();
+            in.nextLine();
+            for (int i = 0; in.hasNextLine(); i++) {
+                Molo m = new Molo();
+                String tkns[] = in.nextLine().split(" ");
+                for (int j = 0; j < tkns.length - 1; j = j + 2){
+                    Nave n = new Nave(tkns[j], Integer.parseInt(tkns[j+1]));
+                    m.attracca(n);
+                }
+                scalo.aggiungi(m);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erorre scanner");
+            System.err.println(ex);
+        }
 ```
-
-
 
 ____
 

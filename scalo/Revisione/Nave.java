@@ -6,9 +6,9 @@ import java.util.Objects;
  */
 public class Nave {
     /**
-     * AF: this.nome[this.peso]
      * RI:  peso > 0
      *      nome != null e nome non vuoto
+     * AF: this.nome[this.peso]
      */
 
     public final String nome;
@@ -34,6 +34,11 @@ public class Nave {
         if (!(obj instanceof Nave)) return false;
         Nave o = (Nave)obj;
         return (o.nome.equals(this.nome) && o.peso == this.peso);
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.hashCode() + peso;
     }
 
     public String toString(){
