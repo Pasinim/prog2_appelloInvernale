@@ -43,6 +43,14 @@ public class Molo {
         navi.addFirst(n);
     }
 
+    /**
+     * Restituise il numero di nave presenti nel molo
+     * @return numero di nave presenti nel molo
+     */
+    public int moloSize(){
+        return navi.size();
+    }
+
     public String toString() {
         String ret = "";
         Iterator<Nave> it = navi.iterator();
