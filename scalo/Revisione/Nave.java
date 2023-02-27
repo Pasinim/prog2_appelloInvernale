@@ -8,7 +8,7 @@ public class Nave {
     /**
      * RI:  peso > 0
      *      nome != null e nome non vuoto
-     * AF: this.nome[this.peso]
+     * AF: "this.nome[this.peso]"
      */
 
     public final String nome;
@@ -44,6 +44,4 @@ public class Nave {
     public String toString(){
         return String.format("%s[%d]", nome, peso);
     }
-
-    
 }
