@@ -27,7 +27,7 @@ public class TestRunner {
         System.out.println(scalo.toString());
 
 
-        MiniRimorchiatore r = new MiniRimorchiatore(scalo);
+        Rimorchiatore r = new CautoRimorchiatore(scalo, 25);
         System.out.println(r.sposta(scalo.getMolo(nMoloPartenza), scalo.getMolo(nMoloArrivo), nNavi));
         System.out.println(scalo.toString());
     }

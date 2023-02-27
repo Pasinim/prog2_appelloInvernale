@@ -41,7 +41,7 @@ public class CautoRimorchiatore extends Rimorchiatore {
                     pesoCorrente = 0;
                     continue;
                 }
-                tmp.attracca(partenza.salpa());
+                tmp.attracca(currNave);
             }
         }
 
