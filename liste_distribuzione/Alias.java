@@ -35,7 +35,7 @@ public class Alias implements Iterable<Indirizzo> {
         Objects.requireNonNull(d, "Impossibile creare un alias per un dominio null");
         dominio = d;
         locals = new HashSet<Locale>();
-        }
+    }
 
  /**
   * Aggiunge un indirizzo locale all'alias. Se è già presente non fa nulla.
