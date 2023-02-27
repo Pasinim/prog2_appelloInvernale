@@ -1,4 +1,10 @@
+import java.nio.channels.UnsupportedAddressTypeException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+
+import javax.naming.OperationNotSupportedException;
 
 /**
  * un rimorchiatore "prudente", caratterizzato da un *carico massimo* in grado di
@@ -17,6 +23,8 @@ public class CautoRimorchiatore extends Rimorchiatore {
      * @param s Scalo su cui lavora il rimorchiatore
      * @param caricoMassimo massimo peso che il rimorchiatore può spostare
      * @throws IllegalArgumentException se il carico massimo è minore o uguale a zero
+     * 
+     * TODO: Eccezione se il carico massimo è minore del peso di una nave (non della prima)
      */    
     public CautoRimorchiatore(Scalo s, int caricoMassimo) {
         super(s);
@@ -31,25 +39,27 @@ public class CautoRimorchiatore extends Rimorchiatore {
         if (quantita <= 0)  throw new IllegalArgumentException(String.format("Impossibile spostare, quantita non valida: %d", quantita));
         if (!scalo.contiene(partenza)) throw new IllegalArgumentException("Impossibile spostare, il molo di partenza non esiste nello scalo");
         if (!scalo.contiene(arrivo)) throw new IllegalArgumentException("Impossibile spostare, il molo di partenza non esiste nello scalo");
-        Molo tmp = new Molo();
-        int pesoCorrente = 0, spostamenti = 0;
-        while (pesoCorrente <= caricoMassimo){
-            for (int i = 0; i < quantita; i++) {
-                Nave currNave = partenza.salpa();
-                if ((pesoCorrente + currNave.peso) > caricoMassimo) { 
-                    spostamenti += 1;
-                    pesoCorrente = 0;
-                    continue;
-                }
-                tmp.attracca(currNave);
+        int carico = 0, spostamenti = 0;
+        
+        List<Nave> navi = new ArrayList<>();
+        for (int i = 0; i < quantita; i++) {
+            Nave n = partenza.salpa();
+            if (carico + n.peso > carico) {
+                partenza.attracca(n);
+                spostamenti++;
+                carico = 0;
+                continue;
             }
+            carico += n.peso;
+            navi.add(n);
+            partenza.salpa();
+        }
+        Collections.reverse(navi);
+        for (Nave ship : navi) {
+            arrivo.attracca(ship);
         }
 
-        for (int i = 0; i < quantita; i++) 
-            arrivo.attracca(tmp.salpa());
-
         return spostamenti;
-
     }
     
 }
