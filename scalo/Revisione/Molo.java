@@ -9,7 +9,8 @@ import java.util.Objects;
 public class Molo {
     /**
      * RI: navi != null, navi non contiene nessun riferimento null
-     * AF: Per ogni nave i presente in navi: i[0].toString + ", " + i[1].toString() + ", " + ... +  i[navi.size-1].toString()  */
+     * AF: Per ogni nave i presente in navi: i[0].toString + ", " + i[1].toString() + ", " + ... +  i[navi.size-1].toString()  
+     * I-ESIMA NAVE A SALPARE E L IESIMO ELEMENTO DELLA LISTA*/
 
     private final LinkedList<Nave> navi;
     	

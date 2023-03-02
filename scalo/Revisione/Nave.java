@@ -2,7 +2,7 @@
 import java.util.Objects;
 
 /**
- * OVERVIEW: Le istanze di questa classe IMMUTABILE rappresentano una nave cargo
+ * OVERVIEW: Le istanze di questa classe IMMUTABILE rappresentano una nave cargo, che possiede un nome ed un peso
  */
 public class Nave {
     /**
@@ -20,6 +20,7 @@ public class Nave {
      * @param peso peso della nave
      * @throws NullPointerException se nome è null
      * @throws IllegalArgumentExpectiomn se nome è una stringa vuota oppure se il peso è <= 0
+     * 
      */
     public Nave(String nome, int peso) {
         Objects.requireNonNull(nome, "Impossibile creare una nave cargo con nome null");
@@ -31,6 +32,7 @@ public class Nave {
 
     @Override
     public boolean equals(Object obj) {
+        Objects.requireNonNull(obj);
         if (!(obj instanceof Nave)) return false;
         Nave o = (Nave)obj;
         return (o.nome.equals(this.nome) && o.peso == this.peso);
@@ -38,8 +40,8 @@ public class Nave {
 
     @Override
     public int hashCode() {
-        return nome.hashCode() + peso;
-    }
+      //  return nome.hashCode() + peso;  //Objects.hashCode
+//        Objects.hash(nome, peso);
 
     public String toString(){
         return String.format("%s[%d]", nome, peso);

@@ -24,7 +24,6 @@ public class CautoRimorchiatore extends Rimorchiatore {
      * @param caricoMassimo massimo peso che il rimorchiatore può spostare
      * @throws IllegalArgumentException se il carico massimo è minore o uguale a zero
      * 
-     * TODO: Eccezione se il carico massimo è minore del peso di una nave (non della prima)
      */    
     public CautoRimorchiatore(Scalo s, int caricoMassimo) {
         super(s);
@@ -32,6 +31,10 @@ public class CautoRimorchiatore extends Rimorchiatore {
         this.caricoMassimo = caricoMassimo;
     }
 
+    /*
+    * @params... come super()
+    * @throws IllegalArgumentException:  TODO: #3 Eccezione se il carico massimo del rimorchiatore è minore del peso di una nave (non della prima)
+    */
     @Override
     public int sposta(Molo partenza, Molo arrivo, int quantita) throws IllegalArgumentException, NullPointerException {
         Objects.requireNonNull(partenza, "Molo di partenza null, impossibile spostare");
@@ -41,7 +44,7 @@ public class CautoRimorchiatore extends Rimorchiatore {
         if (!scalo.contiene(arrivo)) throw new IllegalArgumentException("Impossibile spostare, il molo di partenza non esiste nello scalo");
         int carico = 0, spostamenti = 0;
         
-        List<Nave> navi = new ArrayList<>();
+        List<Nave> tmp = new ArrayList<>();
         for (int i = 0; i < quantita; i++) {
             Nave n = partenza.salpa();
             if (carico + n.peso > carico) {
@@ -51,14 +54,13 @@ public class CautoRimorchiatore extends Rimorchiatore {
                 continue;
             }
             carico += n.peso;
-            navi.add(n);
+            tmp.add(n);
             partenza.salpa();
         }
-        Collections.reverse(navi);
-        for (Nave ship : navi) {
+        Collections.reverse(tmp);
+        for (Nave ship : tmp) {
             arrivo.attracca(ship);
         }
-
         return spostamenti;
     }
     

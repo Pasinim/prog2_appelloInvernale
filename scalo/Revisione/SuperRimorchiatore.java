@@ -1,8 +1,8 @@
 import java.util.Objects;
 
-/* Overview
+/* Overview:
  * un "super" rimorchiatore in grado di spostare un numero potenzialmente
-    illimitato di navi cargo alla volta;
+ * illimitato di navi cargo alla volta;
  */
 
 public class SuperRimorchiatore extends Rimorchiatore {
@@ -27,5 +27,4 @@ public class SuperRimorchiatore extends Rimorchiatore {
         
         return 1;
     }
-
 }
