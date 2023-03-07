@@ -42,7 +42,9 @@ public class Scalo {
     public void aggiungi(final Molo m) {
         Objects.requireNonNull(m, "Impossibile aggiungere un molo null");
         if (moli.contains(m)) return;
-        else moli.add(m);
+        // else moli.add(m);
+        // m.equals(m)
+
     }
 
     /* 
