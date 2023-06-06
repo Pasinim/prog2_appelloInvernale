@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import Estate2023.Molo;
+
 /**
  * OVERVIEW: Le istanze di questa classe mutabile rappresentano uno scalo, che possiede un elenco di moli.
  */

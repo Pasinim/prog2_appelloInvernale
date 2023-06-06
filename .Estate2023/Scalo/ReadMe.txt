@@ -1,0 +1,1 @@
+Non so perchè ma si rimpono i package e devo compilare il pacchetto in una cartella al di fuori della cartella prog2 :(

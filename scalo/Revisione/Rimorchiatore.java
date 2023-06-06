@@ -1,4 +1,7 @@
 import java.util.Objects;
+
+import Estate2023.Molo;
+import Estate2023.Scalo;
 /**
  * OverView: Classe astratta che implementa parzialmente il comportamento di un rimorchiatore
  */

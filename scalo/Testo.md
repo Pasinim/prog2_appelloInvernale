@@ -25,7 +25,7 @@ almeno verrà esaminato il resto del codice del file.
 
 ### Scalo navale
 
-Uno **scalo navale** è un elenco numerato (non vuoto e finito) di **moli** a
+Uno **scalo navale** è un <mark>elenco numerato (non vuoto e finito) </mark>di **moli** a
 ciascuno dei quali sono attraccate alcune **navi cargo**. Ogni nave cargo è
 caratterizzata da un *nome* e da un *peso*. 
 

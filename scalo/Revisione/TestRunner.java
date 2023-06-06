@@ -1,6 +1,10 @@
 import java.io.FileInputStream;
 import java.util.Scanner;
 
+import Estate2023.Molo;
+import Estate2023.Rimorchiatore;
+import Estate2023.Scalo;
+
 public class TestRunner {
     public static void main(String[] args) {
         Scalo scalo = new Scalo();

@@ -6,6 +6,10 @@ import java.util.Objects;
 
 import javax.naming.OperationNotSupportedException;
 
+import Estate2023.Molo;
+import Estate2023.Rimorchiatore;
+import Estate2023.Scalo;
+
 /**
  * un rimorchiatore "prudente", caratterizzato da un *carico massimo* in grado di
 spostare più di una nave cargo se e solo se (oltre alla prima nave cargo che è

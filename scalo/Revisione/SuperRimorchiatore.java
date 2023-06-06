@@ -1,5 +1,9 @@
 import java.util.Objects;
 
+import Estate2023.Molo;
+import Estate2023.Rimorchiatore;
+import Estate2023.Scalo;
+
 /* Overview:
  * un "super" rimorchiatore in grado di spostare un numero potenzialmente
  * illimitato di navi cargo alla volta;

@@ -46,4 +46,8 @@ public class Nave {
     public String toString(){
         return String.format("%s[%d]", nome, peso);
     }
+
+    public int getPeso() {
+        return 0;
+    }
 }
