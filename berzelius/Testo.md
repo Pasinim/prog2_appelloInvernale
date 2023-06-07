@@ -66,7 +66,7 @@ La somma dei pesi degli atomi che costituiscono una molecola ne determina il
 *peso*. Ad esempio, per la clorofilla
 
 * *formula*: C55H72N4O5Mg (secondo la convenzione di Hill)
-* *peso*: 893.5026 Da
+* *peso*: 893.5026
 
 ### Le equazioni chimiche (parte facoltativa)
 
