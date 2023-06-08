@@ -207,6 +207,15 @@ ___
         }
 ```
 
+6. Iteratore con unmodifiableSet
+   
+   ```java
+       public Iterator<Double> iterator(){
+           return Collections.unmodifiableList(osservazioni).iterator();
+       }
+   
+   ```
+
 ____
 
 1. Metodo `clone`

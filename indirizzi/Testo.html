@@ -1004,117 +1004,214 @@ code {
   white-space: pre-wrap !important;
   }
 </style></head><body class="markdown-body">
-<h1>Statistiche descrittive</h1>
+<h1>Liste di distribuzione</h1>
 <h2>Descrizione</h2>
-<p>Scopo della prova è progettare e implementare una gerarchia di oggetti utili a
-rappresentare il calcolo di <em>statistiche descrittive</em> elementari su sequenze di
-numeri reali.</p>
+<p>Lo scopo della prova è progettare e implementare una gerarchia di oggetti utili a
+gestire un <em>sistema di gestione</em> di elenchi di <em>indirizzi email</em>.</p>
 <p>Per portare a termine il lavoro dovrà decidere se e quali interfacce e classi
 (concrete o astratte) implementare. Per ciascuna di esse <strong>dovrà descrivere</strong>
 (preferibilmente in formato Javadoc, ma comunque solo attraverso commenti
 presenti nel codice) le scelte relative alla <strong>rappresentazione</strong> dello stato
 (con particolare riferimento all'<em>invariante di rappresentazione</em> e alla
 <em>funzione di astrazione</em>) e ai <strong>metodi</strong> (con particolare riferimento a
-<em>pre/post-condizioni</em>, <em>eccezioni</em> ed <em>effetti collaterali</em>, soffermandosi a
-illustrare le ragioni della <em>correttezza</em> solo per le implementazioni che
-riterrà più critiche). Osservi che <em>l'esito di questa prova si baserà tanto su
-questa documentazione quanto sul codice sorgente</em>.</p>
-<h3>Dettagli pratici</h3>
-<p><strong>Sviluppi la sua soluzione in una serie di file <code>.java</code> che salverà nella
-medesima cartella che contiene questo testo d'esame</strong>, usando esclusivamente il
-<em>default package</em> — altrimenti detto, <strong>senza creare sottocartelle e non
-introducendo alcuna dichiarazione <code>package</code> nei suoi file sorgenti</strong>. Se non
-seguirà esattamente queste indicazioni, il suo materiale non verrà raccolto dal
-sistema che gestisce la consegna e il suo lavoro non potrà essere valutato.</p>
+<em>pre/post-condizioni</em> ed <em>effetti collaterali</em>, soffermandosi a illustrare le
+ragioni della <em>correttezza</em> solo per le implementazioni che riterrà più
+critiche). Osservi che l'esito di questa prova si baserà tanto su questa
+documentazione quanto sul codice sorgente.</p>
 <p>Presti particolare attenzione agli <em>errori di compilazione: l'intero contenuto
 dei file che il compilatore si rifiuta di compilare non sarà affatto esaminato</em>.
 Se riscontrasse errori di compilazione che non è in grado di correggere, valuti
 la possibilità di racchiudere le porzioni di codice che li causano all'interno
 di commenti; resta inteso che tale codice commentato non sarà valutato, ma
 almeno verrà esaminato il resto del codice del file.</p>
-<h2>Media e varianza campionaria</h2>
-<p>La <strong>statistica</strong> descrittiva studia, tra l'altro, diversi indici per
-sintetizzare un insieme di <span class="arithmatex">\(n\)</span> osservazioni <span class="arithmatex">\(x_i\in \mathbb{R}\)</span>; i più noti sono
-l'indice di posizione denominato <em>media</em></p>
-<div class="arithmatex">\[
-\mu = \frac 1 n \sum_i x_i
-\]</div>
-<p>e l'indice di variabilità denominato <em>varianza</em></p>
-<div class="arithmatex">\[
-\sigma^2 = \frac{\sum_i (x_i - \mu)^2 }{n - 1}
-\]</div>
-<p>(ovunque compaia l'indice <span class="arithmatex">\(i\)</span> in queste e nelle successive formule, si intende
-che <span class="arithmatex">\(1 \leq i \leq n\)</span>).</p>
-<p>Date le osservazioni, il calcolo di tali indici può essere realizzato
-concretamente in modi diversi, in ordine crescente di complessità, efficienza e
-stabilità numerica.</p>
-<p>Il primo richiede due "passate" (sulle osservazioni, che vanno pertanto
-memorizzate) ed è suggerito immediatamente dalla definizione stessa degli
-indici:</p>
-<ul>
-<li>dapprima (attraverso la prima "passata") viene calcolata la media;</li>
-<li>tale valore viene quindi utilizzato (durante la seconda "passata") per
-  calcolare la varianza.</li>
-</ul>
-<p>A ben guardare, però, la seconda formula può essere riscritta come:</p>
-<div class="arithmatex">\[
-\sigma^2 = \frac{n\sum_i x^2_i - \left(\sum_i x_i\right)^2 }{n(n - 1)}.
-\]</div>
-<p>Questa seconda formulazione suggerisce che possa bastare una sola "passata" (che
-consente di evitare la memorizzazione delle osservazioni) durante la quale
-vengano al contempo accumulate sia la somma <span class="arithmatex">\(\sum_i x_i\)</span> delle osservazioni che
-quella <span class="arithmatex">\(\sum_i x^2_i\)</span> dei loro quadrati; utilizzando tali valori, al termine
-della "passata", è possibile ottenere sia la media che la varianza.</p>
-<p>La differenza che figura a numeratore può però porre un problema di stabilità
-numerica che può essere corretto considerando la seguente riformulazione del
-calcolo (dovuta a Welford) attraverso le successioni <span class="arithmatex">\(\mu_i\)</span> e <span class="arithmatex">\(\sigma^2_i\)</span>
-definite induttivamente come segue: a partire dai due valori iniziali</p>
-<div class="arithmatex">\[
-\mu_0 = 0,
-\qquad
-\sigma^2_0 = 0
-\]</div>
-<p>all'<span class="arithmatex">\(i\)</span>-esimo passo i valori <span class="arithmatex">\(\mu_i\)</span> e <span class="arithmatex">\(\sigma^2_i\)</span> vengono calcolati, a partire
-dai precedenti valori <span class="arithmatex">\(\mu_{i-1}\)</span> e <span class="arithmatex">\(\sigma^2_{i-1}\)</span> e dall'osservazione <span class="arithmatex">\(x_i\)</span>,
-come segue</p>
-<div class="arithmatex">\[
-\mu_i = \mu_{i-1} + \frac{x_i - \mu_{i-1}}{i},
-\qquad
-\sigma^2_i = \sigma^2_{i-1} + (x_i - \mu_i)(x_i - \mu_{i-1});
-\]</div>
-<p>come è facile convincersi, una volta che sono state elaborate tutte le
-osservazioni, si avrà</p>
-<div class="arithmatex">\[
-\mu = \mu_n,
-\qquad
-\sigma^2 = \frac{\sigma^2_n}{n - 1}.
-\]</div>
-<h3>Cosa dovete implementare</h3>
-<p>Dovete implementare una gerarchia di classi atta a rappresentare il calcolo dei
-due indici descrittivi introdotti nella precedente sezione e offrirne (almeno)
-tre distinte implementazioni, secondo le tecniche mostrate: </p>
-<ul>
-<li>a due "passate",</li>
-<li>a una "passata" e</li>
-<li>"induttiva" (una "passata" numericamente stabile).</li>
-</ul>
+<h3>Indirizzi e alias</h3>
+<p>Un <strong>indirizzo</strong> email è una stringa costituita da una parte <em>locale</em> e da un
+<em>dominio</em> separati dal carattere <code>@</code>; la parte <strong>locale</strong> deve soddisfare
+l'espressione regolare Java <code>^[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*$</code> mentre il
+<strong>dominio</strong> quella <code>^[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$</code> (si
+veda la sezione sui dettagli implementativi per un suggerimento su come
+controllare tale condizione). Un esempio di indirizzo è
+<code>massimo.santini@unimi.it</code> dove <code>massimo.santini</code> è la parte locale e <code>unimi.it</code>
+è il dominio. Due indirizzi sono <em>uguali</em> se e solo se sono rispettivamente
+uguali (come stringhe) le loro parti locali e il loro dominio. </p>
+<p>Dato che spesso è necessario indirizzare un messaggio a più destinatari di uno
+stesso dominio è comodo avere degli <em>alias</em>. Un <strong>alias</strong> è un elenco di parti
+locali di indirizzo email a cui è associato un <em>nome</em> (dato da una stringa
+qualunque, purché non vuota) e un <em>dominio</em>. In molti programmi di gestione
+dell'email è possibile usare un alias al posto di un elenco di indirizzi. Ad
+esempio, se è definito l'alias di nome <code>studenti</code> con dominio
+<code>studenti.unimi.it</code> contenente gli indirizzi locali <code>mario.rossi</code>, <code>carla.bruni</code>
+e <code>giuseppe.verdi</code>, facendo uso dell'alias <code>studenti</code> è possibile indirizzare un
+messaggio agli indirizzi <code>mario.rossi@studenti.unimi.it</code>,
+<code>carla.bruni@studenti.unimi.it</code> e <code>giuseppe.verdi@studenti.unimi.it</code>. Due alias
+sono <em>uguali</em> se e solo se i loro nomi sono uguali (come stringhe). È
+ragionevole aspettarsi che sia possibile <em>aggiungere</em> e <em>rimuovere</em> le parti
+locali di indirizzo a un alias, così come sia possibile sapere se un alias ne
+<em>contiene</em> uno dato, oppure se contiene un indirizzo dato (cosa possibile
+se e solo se il dominio dell'indirizzo coincide con quello dell'alias). Infine,
+è necessario che un alias sia in grado di <em>elencare</em> (con un iteratore) i suoi
+indirizzi (comprensivi di dominio).</p>
+<h3>Liste di distribuzione</h3>
+<p>Può capitare che sia necessario raggiungere con una email indirizzi in domini
+diversi. A tale scopo è possibile definire delle <strong>liste di distribuzione</strong> di
+indirizzi email (a cui, come nel caso degli alias, è associato un <em>nome</em>) che
+possono essere costruite a partire da un <em>alias</em>, oppure facendo la <em>somma</em> o la
+<em>differenza</em> (insiemistica) di due liste di distribuzione. Più precisamente, se
+<code>L</code> e <code>M</code> sono due liste di distribuzione, la <strong>somma</strong> di <code>L</code> e <code>M</code> contiene
+tutti e soli gli indirizzi che sono in <code>L</code> più quelli che sono in <code>M</code>, mentre la
+<strong>differenza</strong> contiene tutti e soli gli indirizzi che sono in <code>L</code> ma non sono
+in <code>M</code>. Due liste di distribuzione sono <em>uguali</em> se e solo se sono uguali (come
+stringhe) i loro nomi. È necessario che una lista di distribuzione sia in grado
+di <em>elencare</em> (con un iteratore) i suoi indirizzi (comprensivi di dominio e
+senza ripetizioni); si osservi che, sebbene le liste di distribuzione siano
+immutabili, non lo sono gli alias a partire dai quali vengono costruite, ragion
+per cui l'elenco di indirizzi di una lista non può essere precalcolato alla sua
+creazione.</p>
+<h3>Gli alias estesi</h3>
+<p><em>L'implementazione dell'entità descritta in questa sezione è del tutto
+facoltativa.</em></p>
+<p>Un <strong>alias esteso</strong> è un alias che, oltre all'elenco di parti locali di
+indirizzo può contenere un elenco di alias (normali, o estesi); si osservi che
+siccome a sua volta un alias esteso può contenerne altri, questa definizione
+darà luogo a una sorta di albero <em>n</em>-ario di elenchi di indirizzi. Oltre alle
+competenze di un normale alias, quello esteso dev'essere in grado di
+<em>aggiungere</em> e <em>rimuovere</em> un alias dal suo elenco. Attenzione particolare deve
+essere invece posta alla nozione di contenimento (che diventa di fatto
+ricorsiva): un alias esteso <em>contiene un indirizzo</em> se e solo se esso è compreso
+nell'elenco delle parti locali o è contenuto in uno degli alias del suo elenco;
+similmente esso <em>contiene un alias</em> se e solo se è compreso nell'elenco dei suoi
+alias, o è contenuto in uno di essi. Infine, un alias esteso deve <em>elencare</em>
+(con un iteratore) tutti gli indirizzi (comprensivi di dominio e senza
+ripetizioni) che contiene direttamente o indirettamente (contenuti cioè in uno
+degli alias del suo elenco).</p>
 <h4>La classe di test</h4>
-<p>La classe di test deve leggere dal flusso di ingresso una sequenza di numeri ed
-emettere nel flusso d'uscita il numero di osservazioni seguito da media e
-varianza calcolata secondo tutte le implementazioni offerte.</p>
-<p>Ad esempio, eseguendo il calcolo con i valori</p>
-<pre><code>49.80401
-49.80400
-49.80309
-49.80399
+<p>A partire dalle entità descritte sopra, dovrà implementare la gerarchia
+necessaria a poter eseguire una classe di test che, leggendo dal flusso di
+ingresso una sequenza di comandi, li attui istanziando le necessarie entità ed
+esercitandone i metodi.</p>
+<p>Ogni linea del flusso di ingresso rappresenta un comando che può essere di
+<em>creazione</em>, <em>mutazione</em> o <em>ispezione</em>. </p>
+<p>I comandi di creazione contengono il segno <code>=</code> e servono a creare un alias (nel
+qual caso, a sinistra del segno <code>=</code> compare il segno <code>@</code>), oppure una lista.
+Sono esempi di comandi di creazione:</p>
+<pre><code>primo@dominio.baz = locale0, locale1, locale2
+secondo@dominio.baz = locale2, @primo, locale3
+terza = primo
+quarta = secondo
+somma = terza + quarta
+differenza = quarta - terza
 </code></pre>
-<p>nel flusso di ingresso la soluzione emette</p>
-<pre><code>4, 4.98037725e+01, 2.07090731e-07
-4, 4.98037725e+01, 2.07091667e-07
-4, 4.98037725e+01, 2.07091667e-07
+<p>Per attuare il primo comando è necessario creare l'alias di nome <code>primo</code> con
+dominio <code>dominio.baz</code> e contenente le parti locali <code>locale0</code>, <code>locale1</code> e <code>locale2</code>.
+Per il secondo (che va considerato solo nel caso in cui siano stati implementati
+gli alias estesi) andrà creato l'alias esteso di nome <code>secondo</code> con dominio
+<code>dominio.baz</code> e contenente le parti locali <code>locale2</code> e <code>locale3</code> e l'alias <code>primo</code>.
+Per le restanti quattro righe, dovranno essere create delle liste di
+distribuzione, due di nome <code>terza</code> e <code>quarta</code> (costruite rispettivamente a
+partire dagli alias <code>primo</code> e <code>secondo</code>) e quindi una lista di nome <code>somma</code>
+ottenuta facendo la somma delle due liste precedenti e per finire una di nome
+<code>differenza</code> ottenuta facendo la differenza delle due liste <code>quarta</code> e <code>terza</code>.</p>
+<p>I comandi di mutazione alterano il contenuto di un alias; ad esempio</p>
+<pre><code>primo -= locale1
+secondo += locale4
+secondo -= @primo
 </code></pre>
-<p>in cui, per la varianza, si nota una discrepanza sulla quinta cifra dopo la
-virgola.</p>
+<p>Per attuare il primo comando va rimosso l'indirizzo <code>locale1</code> dall'alias di nome
+<code>primo</code>; i restanti comandi operano sull'alias di nome <code>secondo</code>, per attuarli è
+sufficiente aggiungere rispettivamente l'indirizzo <code>locale4</code> e rimuovere l'alias
+di nome <code>primo</code>.</p>
+<p>I comandi di ispezione sono costituiti da un nome di alias, o lista (potete
+assumere che nei comandi di creazione ogni nome venga usato una sola volta) e la
+loro attuazione corrisponde ad emettere nel flusso d'uscita il risultato
+dell'iterazione sui loro indirizzi (prefissata dal tipo e nome dell'elenco). Ad
+esempio, qualora i comandi</p>
+<pre><code>primo
+secondo
+somma
+differenza
+</code></pre>
+<p>seguano immediatamente quelli di creazione dati in precedenza, la classe deve
+emettere</p>
+<pre><code>Alias primo =
+  locale2@dominio.baz
+  locale1@dominio.baz
+  locale0@dominio.baz
+Alias secondo =
+  locale3@dominio.baz
+  locale2@dominio.baz
+  locale1@dominio.baz
+  locale0@dominio.baz
+List somma =
+  locale2@dominio.baz
+  locale1@dominio.baz
+  locale0@dominio.baz
+  locale3@dominio.baz
+List differenza =
+  locale3@dominio.baz
+</code></pre>
+<p>se eseguiti nuovamente dopo i comandi di mutazione, devono invece produrre</p>
+<pre><code>Alias primo =
+  locale2@dominio.baz
+  locale0@dominio.baz
+Alias secondo =
+  locale4@dominio.baz
+  locale3@dominio.baz
+  locale2@dominio.baz
+List somma =
+  locale2@dominio.baz
+  locale0@dominio.baz
+  locale4@dominio.baz
+  locale3@dominio.baz
+List differenza =
+  locale4@dominio.baz
+  locale3@dominio.baz
+</code></pre>
+<h2>Suggerimenti implementativi</h2>
+<p>In questa sezione sono contenuti dei suggerimenti implementativi che potrebbero
+risultare utili al fine di velocizzare lo svolgimento della prova.</p>
+<h3>Indirizzi e loro parti</h3>
+<p>Non è sensato rappresentare gli indirizzi e le loro parti con semplici stringhe
+perché è necessario che (ovunque utilizzati) essi soddisfino i vincoli dati
+dalle espressioni regolari indicate; questo richiede l'uso di opportune <em>classi
+immutabili</em>, o <em>record</em>.</p>
+<p>Per verificare che la stringa a cui si riferisce la variabile <code>part</code> soddisfi il
+vincolo espresso dall'espressione regolare data dalla stringa a cui si riferisce
+la variabile <code>er</code> è possibile costruire una volta per tutte un oggetto della
+classe <code>java.util.function.Predicate</code> tramite il metodo di fabbricazione
+<code>compile</code> della classe <code>java.util.regex.Pattern</code> come segue:</p>
+<pre><code>final static Predicate&lt;String&gt; VALIDO = Pattern.compile(er).asPredicate();
+</code></pre>
+<p>Una volta ottenuto il predicato, è possibile sapere se è soddisfatto (al variare
+della stringa da verificare) invocando il metodo <code>test</code> come</p>
+<pre><code>VALIDO.test(part)
+</code></pre>
+<p>che restituisce <code>true</code> se e solo se la stringa a cui si riferisce <code>part</code>
+soddisfa l'espressione regolare definita dalla stringa a cui si riferisce <code>er</code>.</p>
+<h3>Gli iteratori</h3>
+<p>Sia gli alias che le liste di distribuzione devono offrire un iteratore che
+consenta di elencare <em>senza ripetizioni</em> gli indirizzi che contengono. </p>
+<p>Nel caso degli alias estesi e delle liste di distribuzione ottenute per somma la
+richiesta che non vengano prodotti duplicati è particolarmente impegnativa da
+implementare.</p>
+<p>Dato che un punto cruciale dell'astrazione iterazione è quello di consentire un
+accesso al contenuto di una collezione di elementi omogenei in modo efficiente
+sia dal punto di vista del tempo che dello spazio, si precisa che <strong>non</strong>
+saranno ritenute accettabili le implementazioni banalmente derivate dall'uso di
+un <code>Set</code> preventivamente allocato e riempito con tutti gli indirizzi dell'alias,
+o lista di distribuzione. Codice del genere del seguente</p>
+<pre><code>public Iterator&lt;Indirizzo&gt; iterator() {
+  final Set&lt;Indirizzo&gt; indirizzi;
+  for (final Indirizzo indirizzo: …) indirizzi.add(indirizzo);
+  return indirizzi.iterator();
+}
+</code></pre>
+<p>dove la parte <code>…</code> è tale da elencare tutti gli indirizzi contenuti negli alias
+contenuti nell'alias esteso, o nella lista somma, non saranno ritenuti una
+soluzione accettabile e daranno anzi luogo ad una penalizzazione della
+valutazione.</p>
+<p>Piuttosto è preferibile ignorare la richiesta che l'iteratore non produca
+duplicati, implementandone una versione che quantomeno non richieda
+l'allocazione aggiuntiva di una quantità non costante di memoria.</p>
 </body>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
