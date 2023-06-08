@@ -18,7 +18,7 @@ public class TestRunner {
             PassataUno pu = new PassataUno(oss);
             PassataDue pd = new PassataDue(oss);
             System.out.printf("Passata due: %s\n", pd.toString());
-            System.out.printf("Passata uno: %d %s \n", osservazioni.length, pu.toString());
+            System.out.printf("Passata uno: %d %s \n", c, pu.toString());
 
         } catch (Exception e) {
             System.out.println("Errore nella lettura del file");

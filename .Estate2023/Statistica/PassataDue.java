@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class PassataDue implements Statistica {
     /**
-     * IR: media > 0 && varianza > 0
+     * IR: osservazioni != null && osservazioni.length > 0
      * AF:
      */
 
@@ -26,7 +26,7 @@ public class PassataDue implements Statistica {
      */
     public PassataDue(final double[] oss) {
         Objects.requireNonNull(oss, "Array osservazioni nullo");
-        if (oss.length == 0)
+        if (oss.length <= 0)
             throw new IllegalArgumentException("Array osservazioni vuoto");
         // Utilizzare osservazioni = oss non crea una copia dell'array, ma assegna il
         // riferimento all'array oss alla variabile osservazioni. Questo significa che
