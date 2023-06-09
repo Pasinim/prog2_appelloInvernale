@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 public class TestRunner {
     public static void main(String[] args) {
         List<Scaffalatura> scaffalature = new ArrayList<>();
-        try (Scanner in = new Scanner(new FileInputStream("./Robot/input-0.txt"))) {
+        try (Scanner in = new Scanner(new FileInputStream("./.Estate2023/Robot/input-0.txt"))) {
             int nScaffali = in.nextInt();
             in.nextLine();
             for (int i = 0; i < nScaffali; i++) {
