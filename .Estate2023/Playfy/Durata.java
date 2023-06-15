@@ -1,4 +1,3 @@
-package Playfy;
 
 import java.util.Objects;
 
