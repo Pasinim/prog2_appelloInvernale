@@ -1,13 +1,13 @@
 ## Indicazioni generali
 
-> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate \rightarrow devo sempre chiedermi che cosa può andare storto. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
->
+> Prima decido come fare l'astrazione poi identifico la rappresentazione più corretta e infine specifico l'invariante, indicando come tutto deve funzionare, le eccezioni lanciate $\rightarrow$ devo sempre chiedermi che cosa può andare storto. Scelgo la rappresentazione più adeguata e poi mi difendo di consegnuenza, rendendo il metodo totale.
+> 
 > **AF e IR devo farle prima del codice e bene**, il codice lo faccio dopo seguendo AF e IR alla lettera
 
 SET -> Insieme => NO ELEMENTI DUPLICATI
 
 - Fare hash con il metodo fornito da `Objects`:
-
+  
   ```java
   return Objects.hash(nome, cognome, peso);
   ```
@@ -21,7 +21,7 @@ SET -> Insieme => NO ELEMENTI DUPLICATI
 - Quando mi serve fare una ricerca l'implementazione migliore è una `Mappa`, specialmente nelle mappe è necessario prestare attenzione quali eccezioni lanciare dato che è un tipo che può contenere di tutto
 
 - Attribuire ad ogni classe le proprie competenze al giusto livello di astrazione. Ciò signfica specialmente che se definisco una classe con dei metodi che fanno inserire delle informazioni devo avere **sempre** dei metodi che mi fanno prelevare tali informazioni. Un altro modo per attribuire le corrette competenze alla classe e quello di chiedersi:
-
+  
   > La classe ha delle competenze che la contraddistinguono oppure ha delle competenze molto basilari che aggiungono molto poco alle API di java? (ad esempio se una classe ha solamente, contains, size, add non ha molto senso dato che potrei utilizzare semplicemente uan `List` per implementare le operazioni richieste).
 
 ---
@@ -39,7 +39,7 @@ Attribuire ad ogni classe le proprie competenze al giusto livello di astrazione.
 4. Non aggiungere metodi o informazioni ridondanti (ad esempio id in `Scaffalatura`)
 
 5. Se implemento con un `Set` è necessario che la classe abbia un metodo `hashCode()` implementato correttamente. Ad esempio in `Scaffalatura` dovrei avere un `hashCode()` che prende id e nome, in modo da avere un HashCode univoco per ogni istanza.
-
+   
    > Sarebbe stato meglio implementare le `Scaffalature` all'interno del magazzino con una struttura dati diversa dal `Set` proprio per questo motivo.
 
 6. Gli attributi di `Robot` non hanno senso perchè passo il numero di pacchi da spostare nel costruttore, ciò significa che una volta instanziato non posso spostare più dei pacchi che ho definito in fase di creazione dell'istanza.
@@ -86,7 +86,7 @@ Ciò che ho sbagliato maggiormente in questo esame riguardano le competenze di M
 ## Metodi
 
 1. `hashCode`:
-
+   
    ```java
    return Objects.hash(nome, quantita);
    ```
@@ -97,12 +97,12 @@ Ciò che ho sbagliato maggiormente in questo esame riguardano le competenze di M
            if (!(o instanceof Dotazione)) return false;
            final Dotazione obj = (Dotazione) o;
            return obj.nome.equals(this.nome) && obj.quantita == this.quantita;
-
+   
        }
    ```
 
 3. Quando creo una classe con all'interno una variabile di istanza (di tipo primitivo) con `final` non espongo la rappresentazione. Infatti con una implementazione di questo tipo
-
+   
    ```java
     public class Dotazione implements Comparable<Dotazione> {
        public final String nome;
@@ -133,23 +133,23 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
 ### Metodi utili (pt2)
 
 1. Cerca il titolo del brano passato come parametro
-
-```java
+   
+   ```java
    for (final Brano b : brani) if (b.titolo.equals(titolo)) return b;
-```
+   ```
 
 2. Iteratore:
    Il codice dell'iteratore deve essere scritto all'interno della classe (che nell'intestazione deve avere `implements Iterable<T>`), come se fosse un normale metodo.
-
-```java
+   
+   ```java
    public Iterator<Album.Brano> brani(final Album album) {
            Objects.requireNonNull(album);
            return new Iterator<Album.Brano>(){
-
+   
                private final Iterator<Album.Brano> it = iterator();
-
+   
                private Album.Brano next = null;
-
+   
                @Override
                public boolean hasNext(){
                    if (next != null) return true;
@@ -161,7 +161,7 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
                    next = null;
                    return false;
                }
-
+   
                @Override
                public Album.Brano next() {
                    if (!it.hasNext()) throw new NoSuchElementException();
@@ -171,7 +171,7 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
                }
            };
        }
-```
+   ```
 
 3. Un altro esempio di iterator<Integer> sovrascritto:
 
@@ -244,18 +244,18 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
 ```
 
 4. Trovo il primo 1 partendo da sx
-
+   
    ```java
    Integer.numberOfLeadingZeros(i)Iteger.numberOfLeadingZeros(x)
    ```
 
-````
+```
 5. Per contare la posizione da destra (esercizio boolvect)
 
 ```java
    for (int i = 0; i < len; i++)
       scrivi(i, vals.charAt(len - i - 1) == 'V');
-````
+```
 
 6. Lettura da Stidin:
 
@@ -279,7 +279,7 @@ potrei creare una `Dotazione d = new Dotazione("p", 10)` e poi fare
 ```
 
 7. Iteratore con unmodifiableSet
-
+   
    ```java
        public Iterator<Double> iterator(){
            return Collections.unmodifiableList(osservazioni).iterator();
